@@ -220,7 +220,7 @@ public class UI_Manager : MonoBehaviour
             instagram_button.SetActive(false);
             website_button.SetActive(false);
             
-            phone_number.SetActive(false);
+            //phone_number.SetActive(false);
         }
         isWorking = false;
         
@@ -299,7 +299,7 @@ public class UI_Manager : MonoBehaviour
             instagram_button.SetActive(false);
             website_button.SetActive(false);
             
-            phone_number.SetActive(false);
+            //phone_number.SetActive(false);
         }
         pageToSwitch = null;
 
