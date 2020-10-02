@@ -63,6 +63,7 @@
      <Compile Include="Assets\Scripts\ScrollRect_fix.cs" />
      <Compile Include="Assets\Scripts\ScrollRectFixResetter.cs" />
      <Compile Include="Assets\Scripts\ScrollRectResetter.cs" />
+     <Compile Include="Assets\Scripts\StartUpEffect.cs" />
      <Compile Include="Assets\Scripts\UI_Manager.cs" />
      <Compile Include="Assets\Scripts\VerticalLayoutCustom.cs" />
      <Compile Include="Assets\Scripts\WebManager.cs" />
