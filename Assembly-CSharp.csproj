@@ -53,12 +53,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\CalculatedItem.cs" />
+     <Compile Include="Assets\Scripts\Calculator.cs" />
      <Compile Include="Assets\Scripts\CanvasSafeAreaFixer.cs" />
      <Compile Include="Assets\Scripts\CultureButton.cs" />
      <Compile Include="Assets\Scripts\CultureItem.cs" />
      <Compile Include="Assets\Scripts\CultureItemReader.cs" />
      <Compile Include="Assets\Scripts\CultureItemSetter.cs" />
+     <Compile Include="Assets\Scripts\DisableOnStart.cs" />
      <Compile Include="Assets\Scripts\GridLayoutResizer.cs" />
+     <Compile Include="Assets\Scripts\Label_calculated.cs" />
      <Compile Include="Assets\Scripts\PanelResizer.cs" />
      <Compile Include="Assets\Scripts\ScrollRect_fix.cs" />
      <Compile Include="Assets\Scripts\ScrollRectFixResetter.cs" />

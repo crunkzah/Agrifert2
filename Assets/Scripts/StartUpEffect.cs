@@ -25,6 +25,7 @@ public class StartUpEffect : MonoBehaviour
     public void Awake()
     {
         img = GetComponent<Image>();
+        this.gameObject.SetActive(true); 
     }
 
     float alpha = 1f;

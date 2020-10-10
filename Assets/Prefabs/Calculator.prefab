@@ -1,0 +1,269 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6357883146296438388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6357883146296438389}
+  - component: {fileID: 6357883146296438390}
+  m_Layer: 5
+  m_Name: Calculator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6357883146296438389
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6357883146296438388}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6357883146296438390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6357883146296438388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f469d6778f1615f458c3a133215e36a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugItem: {fileID: 0}
+  debugLabel: {fileID: 0}
+  calculatedItemPrefab: {fileID: 0}
+  labelItemPrefab: {fileID: 0}
+  content_rect: {fileID: 0}
+  panel_parent: {fileID: 0}
+  results_label: {fileID: 0}
+  dropdown_culture: {fileID: 0}
+  inputField_weight: {fileID: 0}
+  inputField_norma: {fileID: 0}
+  inputField_area: {fileID: 0}
+  standards:
+  - name: Ozimaya_pshenica_melafen
+    culture: 1
+    type: 0
+    seed: 0.015
+    vegetation: 0.01
+    price: 25000
+    index: 0
+  - name: Ozimaya_pshenica_metallocenUnivesal
+    culture: 1
+    type: 1
+    seed: 0.5
+    vegetation: 1
+    price: 365
+    index: 1
+  - name: Ozimaya_pshenica_melallocenBor
+    culture: 1
+    type: 2
+    seed: 0
+    vegetation: 0.5
+    price: 465
+    index: 2
+  - name: Ozimaya_pshenica_metallocenMed
+    culture: 1
+    type: 3
+    seed: 0
+    vegetation: 1
+    price: 465
+    index: 3
+  - name: Soy_melafen
+    culture: 2
+    type: 0
+    seed: 0.03
+    vegetation: 0.01
+    price: 25000
+    index: 4
+  - name: Soy_universal
+    culture: 2
+    type: 1
+    seed: 0
+    vegetation: 1
+    price: 365
+    index: 5
+  - name: Soy_bor
+    culture: 2
+    type: 2
+    seed: 0
+    vegetation: 1
+    price: 465
+    index: 6
+  - name: Raps_melafen
+    culture: 3
+    type: 0
+    seed: 0.01
+    vegetation: 0.005
+    price: 25000
+    index: 7
+  - name: Raps_universal
+    culture: 3
+    type: 1
+    seed: 1
+    vegetation: 1
+    price: 365
+    index: 8
+  - name: Raps_bor
+    culture: 3
+    type: 2
+    seed: 0
+    vegetation: 0.5
+    price: 465
+    index: 9
+  - name: Raps_med
+    culture: 3
+    type: 3
+    seed: 0
+    vegetation: 0
+    price: 465
+    index: 10
+  - name: Kartofel_melafen
+    culture: 4
+    type: 0
+    seed: 0.03
+    vegetation: 0.03
+    price: 25000
+    index: 11
+  - name: Kartofel_universal
+    culture: 4
+    type: 1
+    seed: 0.5
+    vegetation: 1
+    price: 365
+    index: 12
+  - name: Kartofel_Bor
+    culture: 4
+    type: 2
+    seed: 0
+    vegetation: 1
+    price: 465
+    index: 13
+  - name: Kartofel_marganec
+    culture: 4
+    type: 4
+    seed: 0
+    vegetation: 0
+    price: 465
+    index: 14
+  - name: Kartofel_med
+    culture: 4
+    type: 3
+    seed: 0
+    vegetation: 0.5
+    price: 465
+    index: 15
+  - name: Kartofel_zink
+    culture: 4
+    type: 5
+    seed: 0
+    vegetation: 1
+    price: 465
+    index: 16
+  - name: Kukuruza_melafen
+    culture: 5
+    type: 0
+    seed: 0.05
+    vegetation: 0
+    price: 25000
+    index: 17
+  - name: Kukuruza_universal
+    culture: 5
+    type: 1
+    seed: 0
+    vegetation: 0.5
+    price: 365
+    index: 18
+  - name: Kukuruza_bor
+    culture: 5
+    type: 2
+    seed: 0
+    vegetation: 0
+    price: 465
+    index: 19
+  - name: Kukuruza_marganec
+    culture: 5
+    type: 4
+    seed: 0
+    vegetation: 1
+    price: 465
+    index: 20
+  - name: Kukuruza_med
+    culture: 5
+    type: 3
+    seed: 0
+    vegetation: 1
+    price: 465
+    index: 21
+  - name: Kukuruza_zink
+    culture: 5
+    type: 5
+    seed: 0
+    vegetation: 0.5
+    price: 465
+    index: 22
+  - name: Podsolnechnik_melafen
+    culture: 6
+    type: 0
+    seed: 0.07
+    vegetation: 0
+    price: 25000
+    index: 23
+  - name: Podsolnechnik_universal
+    culture: 6
+    type: 1
+    seed: 0
+    vegetation: 0.5
+    price: 365
+    index: 24
+  - name: Podsolnechnik_bor
+    culture: 6
+    type: 2
+    seed: 0
+    vegetation: 1
+    price: 465
+    index: 25
+  - name: Podsolnechnik_marganec
+    culture: 6
+    type: 4
+    seed: 0
+    vegetation: 0
+    price: 465
+    index: 26
+  - name: Podsolnechnik_med
+    culture: 6
+    type: 3
+    seed: 0
+    vegetation: 0.5
+    price: 465
+    index: 27
+  - name: Podsolnechnik_zink
+    culture: 6
+    type: 5
+    seed: 0
+    vegetation: 0.5
+    price: 465
+    index: 28
+  current_culture: 0
+  current_weight: 0
+  standard_per_ha: 0
+  current_area: 0
