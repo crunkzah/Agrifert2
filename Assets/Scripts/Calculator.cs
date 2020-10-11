@@ -1043,6 +1043,12 @@ public class Calculator : MonoBehaviour
     
     GameObject MakeLabel(string txt, ref float yCoord, ref float yDeltaHeight)
     {
+        float heightMult = 1;
+        if(txt.Length > 32)
+        {
+            heightMult = 2;
+        }
+        
         GameObject label = Instantiate(labelItemPrefab, Vector3.zero, Quaternion.identity, content_rect);
         
         Label_calculated lc = label.GetComponent<Label_calculated>();
@@ -1053,14 +1059,36 @@ public class Calculator : MonoBehaviour
         
         rectTransform = label.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = new Vector2(0, yCoord);
-        rectTransform.sizeDelta = new Vector2(750, y_label_height);
+        rectTransform.sizeDelta = new Vector2(750, y_label_height * heightMult);
         
-        yCoord -= y_step_size + y_label_height;
-        yDeltaHeight -= y_step_size + y_label_height;
+        yCoord -= y_step_size + y_label_height * heightMult;
+        yDeltaHeight -= y_step_size + y_label_height * heightMult;
         
         return label;
         
     }
+    
+    // GameObject MakeLabel2(string txt, ref float yCoord, ref float yDeltaHeight)
+    // {
+    //     GameObject label = Instantiate(labelItemPrefab, Vector3.zero, Quaternion.identity, content_rect);
+        
+    //     Label_calculated lc = label.GetComponent<Label_calculated>();
+    //     lc.SetText(txt);
+        
+    //     RectTransform rectTransform;
+    //     calculatedItems.Add(label);
+        
+    //     rectTransform = label.GetComponent<RectTransform>();
+    //     rectTransform.anchoredPosition = new Vector2(0, yCoord);
+    //     rectTransform.sizeDelta = new Vector2(750, y_label_height * 2);
+        
+    //     yCoord -= y_step_size + y_label_height * 2;
+    //     yDeltaHeight -= y_step_size + y_label_height * 2;
+        
+    //     return label;
+        
+    // }
+    
     GameObject MakeCalculatedItem(ref float yCoord, ref float yDeltaHeight)
     {
         GameObject item;

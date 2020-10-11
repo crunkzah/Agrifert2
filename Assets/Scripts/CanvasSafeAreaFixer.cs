@@ -14,8 +14,8 @@ public class CanvasSafeAreaFixer : MonoBehaviour
         
         float ySize_offset = Screen.safeArea.height - Screen.height;
         
-        Debug.Log("ySize_offset: <color=yellow>" + ySize_offset + "</color>");
+        //Debug.Log("ySize_offset: <color=yellow>" + ySize_offset + "</color>");
         
-        rect.sizeDelta = new Vector2(rect.sizeDelta.x, ySize_offset);
+        rect.sizeDelta = new Vector2(rect.sizeDelta.x, ySize_offset * 0.8f);
     }    
 }
