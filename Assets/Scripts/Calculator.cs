@@ -92,16 +92,30 @@ public class Calculator : MonoBehaviour
         string input; 
         input = inputField_weight.text;
         
-        current_weight = float.Parse(input);
+        if(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
+        {
+            current_weight = 0f;    
+        }
+        else
+            current_weight = float.Parse(input);
         
         input = inputField_norma.text;
         
-        standard_per_ha = float.Parse(input);
+        if(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
+        {
+            standard_per_ha = 0;
+        }
+        else
+            standard_per_ha = float.Parse(input);
         
         input = inputField_area.text;
         
-        current_area = float.Parse(input);
-        
+        if(string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
+        {
+            current_area = 0;
+        }
+        else
+            current_area = float.Parse(input);
     }
     
     public void OnValueChangedArea(string area_value)
@@ -171,8 +185,11 @@ public class Calculator : MonoBehaviour
     
     public void Calculate()
     {
-        Debug.Log("<color=yellow>Calculate() !</color>");
+        // Debug.Log("<color=yellow>Calculate() !</color>");
         ReadCulture();
+        
+        
+        
         
         switch(current_culture)
         {
