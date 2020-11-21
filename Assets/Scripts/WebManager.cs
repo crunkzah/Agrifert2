@@ -1,22 +1,53 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
+using System.Security.Cryptography.X509Certificates;
+
+[System.Serializable]
+public struct City
+{
+    public float lat;
+    public float lon;
+    public int id;
+    public City(float _lat, float _lon, int _id)
+    {
+        lat = _lat;
+        lon = _lon;
+        id = _id;
+    }
+}
+
+public class CustomCertificateHandler : CertificateHandler
+{
+    // Encoded RSAPublicKey
+    private static readonly string PUB_KEY = "";
+
+
+    /// <summary>
+    /// Validate the Certificate Against the Amazon public Cert
+    /// </summary>
+    /// <param name="certificateData">Certifcate to validate</param>
+    /// <returns></returns>
+    protected override bool ValidateCertificate(byte[] certificateData)
+    {
+        return true;
+    }
+}
 
 public class WebManager : MonoBehaviour
 {
-
+    
+    public Dictionary<string, City> cities = new Dictionary<string, City>();
+    
 
     //TODO
     void Awake()
     {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-        Application.targetFrameRate = 120;
-#endif
+        cities.Add("Краснодар", new City(45f, 38f, -1));
 
-#if UNITY_IOS || UNITY_ANDROID
         Application.targetFrameRate = 60;
-#endif
     }
 
     public void OpenMainWebsite()
@@ -29,47 +60,46 @@ public class WebManager : MonoBehaviour
         Application.OpenURL("https://www.instagram.com/agri_fert/");
     }
     
-    // void Update()
-    // {
-    //     if(Input.GetKeyUp(KeyCode.R))
-    //     {
-    //         RequestWeather();
-    //     }
-    // }
+    void Update()
+    {
+        // if(Input.GetKeyUp(KeyCode.R))
+        // {
+        //     RequestWeather();
+        // }
+    }
+    
+    string key = "4cb03038-2c22-11eb-a5a9-0242ac130002-4cb030ce-2c22-11eb-a5a9-0242ac130002";
     
     void RequestWeather()
     {
-        StartCoroutine(GetWeather("55.833333", "37.616667"));
+        StartCoroutine(GetWeather("45.02", "38.59"));
     }
-    string yandexKey = "8a581eb6-cbd2-468a-9e7a-84e03a7cd648";
-    
-    string yandexUrl = "https://api.weather.yandex.ru/v2/forecast?";
+   
 
     IEnumerator GetWeather(string lat, string lon) 
     {
         StringBuilder sb = new StringBuilder();
-        sb.Append(yandexUrl);
-        sb.Append("lat="); sb.Append(lat); sb.Append("&");
-        sb.Append("lon="); sb.Append(lon);// sb.Append("&");
+        //sb.Append(string.Format("api.openweathermap.org/data/2.5/forecast/daily?lat={0}&lon={1}&cnt=1&appid={2}", lat, lon, owKey));
+        sb.Append("https://api.stormglass.io/v2/weather/point?");
+        sb.Append("lat=");sb.Append(lat);
+        sb.Append("&lng=");sb.Append(lon);
+        sb.Append("&params=");sb.Append("waveHeight,airTemperature");
         
-        // sb.Append(yandexKey);
-        
-        //string request = sb.ToString();
-        string request = "https://api.weather.yandex.ru/v2/forecast?lat=55.75396&lon=37.620393&extra=true";
+        string request = sb.ToString();
         Debug.Log(string.Format("<color=yellow>{0}</color>", request));
+        
+ 
+
         
         
         UnityWebRequest www = new UnityWebRequest();
+        // CustomCertificateHandler  certHandler = new CustomCertificateHandler();
+        // www.certificateHandler = certHandler();
+        www.SetRequestHeader("Authorization", key);
         
-        www.SetRequestHeader("X-Yandex-API-Key", yandexKey);
-        Debug.Log(www.GetRequestHeader("X-Yandex-API-Key"));
         www = UnityWebRequest.Get(request);
         
-      
-        
         yield return www.SendWebRequest();
- 
-        // Debug.Log(string.Format("<color=white>RESULT: {0}</color>", www.downloadHandler.text));
             
         if(www.isNetworkError || www.isHttpError) 
         {

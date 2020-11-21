@@ -64,6 +64,7 @@
      <Compile Include="Assets\Scripts\GridLayoutResizer.cs" />
      <Compile Include="Assets\Scripts\Label_calculated.cs" />
      <Compile Include="Assets\Scripts\PanelResizer.cs" />
+     <Compile Include="Assets\Scripts\ScreenshotTaker.cs" />
      <Compile Include="Assets\Scripts\ScrollRect_fix.cs" />
      <Compile Include="Assets\Scripts\ScrollRectFixResetter.cs" />
      <Compile Include="Assets\Scripts\ScrollRectResetter.cs" />
