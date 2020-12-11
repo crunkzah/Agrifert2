@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Authorization.cs" />
      <Compile Include="Assets\Scripts\CalculatedItem.cs" />
      <Compile Include="Assets\Scripts\Calculator.cs" />
      <Compile Include="Assets\Scripts\CanvasSafeAreaFixer.cs" />

@@ -52,7 +52,7 @@ public class WebManager : MonoBehaviour
 
     public void OpenMainWebsite()
     {
-        Application.OpenURL("http://agrifert.ru");
+        Application.OpenURL("https://agrifert.ru");
     }
 
     public void OpenInstagram()
