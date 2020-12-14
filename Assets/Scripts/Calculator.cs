@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 using TMPro;
 
 
@@ -81,8 +82,14 @@ public class Calculator : MonoBehaviour
     
     List<GameObject> calculatedItems = new List<GameObject>();
     
+    CultureInfo ci;
+    
     void Start()
     {
+        ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+        ci.NumberFormat.CurrencyDecimalSeparator = ".";
+        
+        //avarage = double.Parse("0.0",NumberStyles.Any,ci);
         debugItem.SetActive(false);
         debugLabel.SetActive(false);
     }    
@@ -97,7 +104,10 @@ public class Calculator : MonoBehaviour
             current_weight = 0f;    
         }
         else
-            current_weight = float.Parse(input);
+        {
+            Debug.Log(input);
+            current_weight = float.Parse(input, NumberStyles.Any, ci);
+        }
         
         input = inputField_norma.text;
         
@@ -106,7 +116,10 @@ public class Calculator : MonoBehaviour
             standard_per_ha = 0;
         }
         else
-            standard_per_ha = float.Parse(input);
+        {
+            Debug.Log(input);
+            standard_per_ha = float.Parse(input, NumberStyles.Any, ci);
+        }
         
         input = inputField_area.text;
         
@@ -115,46 +128,65 @@ public class Calculator : MonoBehaviour
             current_area = 0;
         }
         else
-            current_area = float.Parse(input);
+        {
+            Debug.Log(input);   
+            current_area = float.Parse(input, NumberStyles.Any, ci);
+        }
     }
     
     public void OnValueChangedArea(string area_value)
     {
-        float area = float.Parse(inputField_area.text); //га
-        float weight = float.Parse(inputField_weight.text);
-        
-        if((int)area > 0 && (int)weight > 0)
+        if(string.IsNullOrEmpty(area_value))
         {
-            float norma = weight * 1000 / area;
+            return;
+        }
+        
+        Debug.Log(string.Format("<color=yellow>{0}</color>", inputField_area.text));
+        float area = float.Parse(inputField_area.text, NumberStyles.Any, ci); //га
+        Debug.Log(string.Format("<color=yellow>{0}</color>", inputField_weight.text));
+        float weight = float.Parse(inputField_weight.text, NumberStyles.Any, ci);
+            
+        if(area > 0 && weight > 0)
+        {
+            float norma = weight * 1000f / area;
             if(inputField_norma.interactable)
             {
-                inputField_norma.text = ((int)norma).ToString();
+                inputField_norma.text = (norma).ToString();
             }
         }
     }
     
+    
+    
     public void OnValueChangedNorma(string norma_value)
     {
-        float norma = float.Parse(inputField_norma.text); // кг/га
-        
-        float weight = float.Parse(inputField_weight.text);
-        
-        if((int)norma > 0)
+        if(string.IsNullOrEmpty(norma_value))
         {
-            float area = weight * 1000 / norma;
+            return;
+        }
+        
+        Debug.Log(string.Format("<color=yellow>{0}</color>", inputField_norma.text));
+        float norma = float.Parse(inputField_norma.text, NumberStyles.Any, ci); // кг/га
+        
+        Debug.Log(string.Format("<color=yellow>{0}</color>", inputField_weight.text));
+        float weight = float.Parse(inputField_weight.text, NumberStyles.Any, ci);
+        
+        if(norma > 0)
+        {
+            float area = weight * 1000f / norma;
             
             if(inputField_area.interactable)
             {
-                inputField_area.text = ((int)area).ToString();
+                inputField_area.text = (area).ToString();
             }
         }
     }
     
     void ReadCulture()
     {
-        Debug.Log(dropdown_culture.value);
+        // Debug.Log(dropdown_culture.value);
         current_culture = (Culture)dropdown_culture.value;
-        Debug.Log(current_culture.ToString()); 
+        // Debug.Log(current_culture.ToString()); 
     }
     
     void ResetInput()
@@ -202,48 +234,64 @@ public class Calculator : MonoBehaviour
             {
                 ReadInput();
                 Result_Ozimaya_pshenica();
+                UI_Manager.ShowMessage("Расчет произведен!");
+                
                 break;
             }
             case Culture.Soy:
             {
                 ReadInput();
                 Result_Soy();
+                UI_Manager.ShowMessage("Расчет произведен!");
+                
                 break;
             }
             case Culture.Raps:
             {
                 ReadInput();
                 Result_Raps();
+                UI_Manager.ShowMessage("Расчет произведен!");
+                
                 break;
             }
             case Culture.Kartofel:
             {
                 ReadInput();
                 Result_Kartofel();
+                UI_Manager.ShowMessage("Расчет произведен!");
+                
                 break;
             }
             case Culture.Kukuruza:
             {
                 ReadInput();
                 Result_Kukuruza();
+                UI_Manager.ShowMessage("Расчет произведен!");
+                
                 break;
             }
             case Culture.Podsolnechnik:
             {
                 ReadInput();
                 Result_Podsolnechnik();
+                UI_Manager.ShowMessage("Расчет произведен!");
+                
                 break;
             }
             case Culture.Xlopchatnik:
             {
                 ReadInput();
                 Result_Xlopchatnik();
+                UI_Manager.ShowMessage("Расчет произведен!");
+                
                 break;
             }
             case Culture.Svekla:
             {
                 ReadInput();
                 Result_Svekla();
+                UI_Manager.ShowMessage("Расчет произведен!");
+                
                 break;
             }
         }
@@ -1125,7 +1173,7 @@ public class Calculator : MonoBehaviour
     
     string FormatPrice(float val)
     {
-        string s = FormatMillion(((int)val).ToString());
+        string s = FormatMillion((val).ToString());
         StringBuilder sb = new StringBuilder(s);
         
         sb.Append("  руб");
@@ -1135,8 +1183,9 @@ public class Calculator : MonoBehaviour
     
     string FormatLitres(float val)
     {
-        int val_int = Mathf.CeilToInt(val);
-        string s = (val_int).ToString();
+        //int val_int = Mathf.CeilToInt(val);
+        
+        string s = (val).ToString();
         StringBuilder sb = new StringBuilder(s);
         
         sb.Append(" л");
@@ -1163,7 +1212,7 @@ public class Calculator : MonoBehaviour
         for(int i = s.Length-1; i >= 0; i--)
         {
             k++;
-            if(k % 3 == 0)
+            if(k % 3 == 0 && s[i] != '.')
             {
                 k = 0;
                 if(i != 0)

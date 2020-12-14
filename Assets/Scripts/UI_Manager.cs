@@ -2,9 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UI_Manager : MonoBehaviour
 {
+    [Header("Message holder:")]
+    public MessageLabel message;
+    
+    static UI_Manager _instance;
+    
+    public static UI_Manager Singleton()
+    {
+        if(_instance == null)
+        {
+            _instance = FindObjectOfType<UI_Manager>();
+        }
+        
+        return _instance;
+    }
+    
+    public static void ShowMessage(string msg)
+    {
+       Singleton()._ShowMessage(msg);
+    }
+    
+    void _ShowMessage(string msg)
+    {
+        message.ShowMessage(msg);
+    }
+    
     [Header("Objects in footer:")]
     public GameObject back_button;
     public GameObject website_button;
