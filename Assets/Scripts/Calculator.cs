@@ -86,6 +86,8 @@ public class Calculator : MonoBehaviour
     
     void Start()
     {
+        //SaveStandards();
+        
         ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
         ci.NumberFormat.CurrencyDecimalSeparator = ".";
         
@@ -134,16 +136,17 @@ public class Calculator : MonoBehaviour
         }
     }
     
-    public void OnValueChangedArea(string area_value)
+    public void OnValueChangedArea()
     {
+        string area_value = inputField_area.text;
         if(string.IsNullOrEmpty(area_value))
         {
             return;
         }
         
-        Debug.Log(string.Format("<color=yellow>{0}</color>", inputField_area.text));
+        //Debug.Log(string.Format("<color=yellow>{0}</color>", inputField_area.text));
         float area = float.Parse(inputField_area.text, NumberStyles.Any, ci); //га
-        Debug.Log(string.Format("<color=yellow>{0}</color>", inputField_weight.text));
+        //Debug.Log(string.Format("<color=yellow>{0}</color>", inputField_weight.text));
         float weight = float.Parse(inputField_weight.text, NumberStyles.Any, ci);
             
         if(area > 0 && weight > 0)
@@ -158,17 +161,18 @@ public class Calculator : MonoBehaviour
     
     
     
-    public void OnValueChangedNorma(string norma_value)
+    public void OnValueChangedNorma()
     {
+        string norma_value = inputField_norma.text;
         if(string.IsNullOrEmpty(norma_value))
         {
             return;
         }
         
-        Debug.Log(string.Format("<color=yellow>{0}</color>", inputField_norma.text));
+        //Debug.Log(string.Format("<color=yellow>{0}</color>", inputField_norma.text));
         float norma = float.Parse(inputField_norma.text, NumberStyles.Any, ci); // кг/га
         
-        Debug.Log(string.Format("<color=yellow>{0}</color>", inputField_weight.text));
+        //Debug.Log(string.Format("<color=yellow>{0}</color>", inputField_weight.text));
         float weight = float.Parse(inputField_weight.text, NumberStyles.Any, ci);
         
         if(norma > 0)
@@ -191,16 +195,20 @@ public class Calculator : MonoBehaviour
     
     void ResetInput()
     {
-        dropdown_culture.value = 0;
-        dropdown_culture.RefreshShownValue();
+        // dropdown_culture.value = 0;
+        // dropdown_culture.RefreshShownValue();
+        
+        
                 
-        inputField_weight.text = "0";
-        inputField_norma.text  = "0";
-        inputField_area.text   = "0";
+        inputField_weight.text = string.Empty;
+        inputField_norma.text  = string.Empty;
+        inputField_area.text   = string.Empty;
     }
     
     public void OnDropDownValueChanged()
     {
+        ResetInput();
+        ClearResults();
         if(dropdown_culture.value == (int)Culture.Svekla)
         {
             inputField_weight.interactable = false;
@@ -213,6 +221,8 @@ public class Calculator : MonoBehaviour
             inputField_weight.interactable = true;
             inputField_norma.interactable = true;
         }
+        
+        //UI_Manager.ShowMessage("Расчет!");
     }
     
     public void Calculate()
@@ -326,13 +336,13 @@ public class Calculator : MonoBehaviour
             string txt = "Фазы для обработок (рекомендации): между фазой 4-6 настоящих листьев 20 дней до уборки:";
             MakeLabel(txt, ref current_y, ref delta_height);
         }
-        float sum2 = 0;
+        double sum2 = 0;
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
             ci = item.GetComponent<CalculatedItem>();
             //    
-            float veg_melafen_v = current_area * standards[35].vegetation;
-            float veg_melafen_price = veg_melafen_v * standards[35].price;
+            double veg_melafen_v = current_area * standards[35].vegetation;
+            double veg_melafen_price = veg_melafen_v * standards[35].price;
             
             //
             ci.label1.SetText("Обработка по вегетации регулятором роста растений <b><color=#41AB4A>Мелафен</color> (2 обработки по 15 мл)</b>:");
@@ -345,8 +355,8 @@ public class Calculator : MonoBehaviour
             item = MakeCalculatedItem(ref current_y, ref delta_height);
             ci = item.GetComponent<CalculatedItem>();
             //    
-            float veg_universal_v = current_area * standards[36].vegetation;
-            float veg_universal_price = veg_universal_v * standards[36].price;
+            double veg_universal_v = current_area * standards[36].vegetation;
+            double veg_universal_price = veg_universal_v * standards[36].price;
             
             //
             ci.label1.SetText("Обработка по вегетации комплексным удобрением <color=#41AB4A><b>Универсал</b></color>:");
@@ -359,8 +369,8 @@ public class Calculator : MonoBehaviour
             item = MakeCalculatedItem(ref current_y, ref delta_height);
             ci = item.GetComponent<CalculatedItem>();
             //    
-            float veg_bor_v = current_area * standards[37].vegetation;
-            float veg_bor_price = veg_bor_v * standards[37].price;
+            double veg_bor_v = current_area * standards[37].vegetation;
+            double veg_bor_price = veg_bor_v * standards[37].price;
             
             //
             ci.label1.SetText("Обработка по вегетации комплексным удобрением <color=#41AB4A><b>Бор и Молибден</b></color>:");
@@ -373,8 +383,8 @@ public class Calculator : MonoBehaviour
             item = MakeCalculatedItem(ref current_y, ref delta_height);
             ci = item.GetComponent<CalculatedItem>();
             //    
-            float veg_med_v = current_area * standards[39].vegetation;
-            float veg_med_price = veg_med_v * standards[39].price;
+            double veg_med_v = current_area * standards[39].vegetation;
+            double veg_med_price = veg_med_v * standards[39].price;
             
             //
             ci.label1.SetText("Обработка по вегетации удобрением <color=#41AB4A><b>Медь</b></color>:");
@@ -387,8 +397,8 @@ public class Calculator : MonoBehaviour
             item = MakeCalculatedItem(ref current_y, ref delta_height);
             ci = item.GetComponent<CalculatedItem>();
             //    
-            float veg_marganec_v = current_area * standards[38].vegetation;
-            float veg_marganec_price = veg_marganec_v * standards[38].price;
+            double veg_marganec_v = current_area * standards[38].vegetation;
+            double veg_marganec_price = veg_marganec_v * standards[38].price;
             
             //
             ci.label1.SetText("Обработка по вегетации удобрением <color=#41AB4A><b>Марганец</b></color>:");
@@ -1181,7 +1191,51 @@ public class Calculator : MonoBehaviour
         return sb.ToString();
     }
     
+    string FormatPrice(double val)
+    {
+        string s = FormatMillion((val).ToString());
+        StringBuilder sb = new StringBuilder(s);
+        
+        sb.Append("  руб");
+        
+        return sb.ToString();
+    }
+    
+    string FormatPrice(decimal val)
+    {
+        string s = FormatMillion((val).ToString());
+        StringBuilder sb = new StringBuilder(s);
+        
+        sb.Append("  руб");
+        
+        return sb.ToString();
+    }
+    
     string FormatLitres(float val)
+    {
+        //int val_int = Mathf.CeilToInt(val);
+        
+        string s = (val).ToString();
+        StringBuilder sb = new StringBuilder(s);
+        
+        sb.Append(" л");
+        
+        return sb.ToString();
+    }
+    
+    string FormatLitres(double val)
+    {
+        //int val_int = Mathf.CeilToInt(val);
+        
+        string s = (val).ToString();
+        StringBuilder sb = new StringBuilder(s);
+        
+        sb.Append(" л");
+        
+        return sb.ToString();
+    }
+    
+    string FormatLitres(decimal val)
     {
         //int val_int = Mathf.CeilToInt(val);
         
@@ -1222,4 +1276,123 @@ public class Calculator : MonoBehaviour
         
         return Result.ToString();
     }
+    
+    void ReadStandards(Culture cult)
+    {
+        switch(cult)
+        {
+            case(Culture.None):
+            {
+                break;
+            }
+            case(Culture.Ozimaya_pshenica):
+            {
+                standards[0] = ReadSingleStandard(standards[0].name);
+                standards[1] = ReadSingleStandard(standards[1].name);
+                standards[2] = ReadSingleStandard(standards[2].name);
+                standards[3] = ReadSingleStandard(standards[3].name);
+                
+                break;
+            }
+            case(Culture.Soy):
+            {
+                standards[4] = ReadSingleStandard(standards[4].name);
+                standards[5] = ReadSingleStandard(standards[5].name);
+                standards[6] = ReadSingleStandard(standards[6].name);
+                
+                break;
+            }
+            case(Culture.Raps):
+            {
+                standards[7] = ReadSingleStandard(standards[7].name);
+                standards[8] = ReadSingleStandard(standards[8].name);
+                standards[9] = ReadSingleStandard(standards[9].name);
+                standards[10] = ReadSingleStandard(standards[10].name);
+                
+                break;
+            }
+            case(Culture.Kartofel):
+            {
+                standards[11] = ReadSingleStandard(standards[11].name);
+                standards[12] = ReadSingleStandard(standards[12].name);
+                standards[13] = ReadSingleStandard(standards[13].name);
+                standards[14] = ReadSingleStandard(standards[14].name);
+                standards[15] = ReadSingleStandard(standards[15].name);
+                standards[16] = ReadSingleStandard(standards[16].name);
+                
+                
+                break;
+            }
+            case(Culture.Kukuruza):
+            {
+                standards[17] = ReadSingleStandard(standards[17].name);
+                standards[18] = ReadSingleStandard(standards[18].name);
+                standards[19] = ReadSingleStandard(standards[19].name);
+                standards[20] = ReadSingleStandard(standards[20].name);
+                standards[21] = ReadSingleStandard(standards[21].name);
+                standards[22] = ReadSingleStandard(standards[22].name);
+                
+                break;
+            }
+            case(Culture.Podsolnechnik):
+            {
+                standards[23] = ReadSingleStandard(standards[23].name);
+                standards[24] = ReadSingleStandard(standards[24].name);
+                standards[25] = ReadSingleStandard(standards[25].name);
+                standards[26] = ReadSingleStandard(standards[26].name);
+                standards[27] = ReadSingleStandard(standards[27].name);
+                standards[28] = ReadSingleStandard(standards[28].name);
+                
+                break;
+            }
+            case(Culture.Xlopchatnik):
+            {
+                standards[29] = ReadSingleStandard(standards[29].name);
+                standards[30] = ReadSingleStandard(standards[30].name);
+                standards[31] = ReadSingleStandard(standards[31].name);
+                standards[32] = ReadSingleStandard(standards[32].name);
+                standards[33] = ReadSingleStandard(standards[33].name);
+                standards[34] = ReadSingleStandard(standards[34].name);
+                
+                break;
+            }
+            case(Culture.Svekla):
+            {
+                standards[35] = ReadSingleStandard(standards[35].name);
+                standards[36] = ReadSingleStandard(standards[36].name);
+                standards[37] = ReadSingleStandard(standards[37].name);
+                standards[38] = ReadSingleStandard(standards[38].name);
+                standards[39] = ReadSingleStandard(standards[39].name);
+                
+                break;
+            }
+            
+        }
+        Debug.Log(string.Format("<color=yellow>Read</color> standard of {0}.", cult));
+        
+    }
+    
+    Standard ReadSingleStandard(string _name)
+    {
+        string standardAsString;
+        Standard st;
+        
+        standardAsString = PlayerPrefs.GetString(_name);
+        st = JsonUtility.FromJson<Standard>(standardAsString);
+        
+        return st;
+    }
+    
+    public void SaveStandards()
+    {
+        for(int i = 0; i < standards.Length; i++)
+        {
+            string standard = JsonUtility.ToJson(standards[i]);
+            PlayerPrefs.SetString(standards[i].name, standard);
+        }
+        
+        PlayerPrefs.Save();
+        Debug.Log("<color=green>Saved</color> standards!");
+    }
+    
 }

@@ -25,7 +25,7 @@ public class Authorization : MonoBehaviour
     
     void ReadLogin()
     {
-        currentLogin = loginInputField.text.ToLower();    
+        currentLogin = loginInputField.text;    
         
     }
     
@@ -37,7 +37,20 @@ public class Authorization : MonoBehaviour
     void Awake()
     {
         //logPassPair.Add("admin",  "dx3C5CGW");
-        logPassPair.Add("admin",  "admin");
+        logPassPair.Add("admin",  "12091209");
+        
+        logPassPair.Add("Nikolay", "ba0dpldg");
+        logPassPair.Add("Lilya", "88svd91w");
+        logPassPair.Add("Aigul", "6i234gxn");
+        logPassPair.Add("Fanis", "opdy36pu");
+        logPassPair.Add("Kirill", "nn1d44w5");
+        logPassPair.Add("Artem", "0rimj5px");
+        logPassPair.Add("Andrey", "ix1re7i4");
+        logPassPair.Add("Diana", "a838keln");
+        logPassPair.Add("DmitryK", "1r298opg");
+        logPassPair.Add("Sergey", "814y3hjr");
+        logPassPair.Add("Renat", "8q1ur3gx");
+        
     }
     
     void ReadPrefs()
@@ -163,7 +176,7 @@ public class Authorization : MonoBehaviour
     void OnLoginSuccess()
     {
         SetPrefsAsLoggedIn();
-        
+        SignedIn = true;
         loginInputField.SetTextWithoutNotify(currentLogin);
         proceedButton_obj.SetActive(true);
         SayLoginMessage("<color=#2F8036>Вы вошли!</color>");

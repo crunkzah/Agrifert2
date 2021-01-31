@@ -254,8 +254,8 @@ PlayerSettings:
   AndroidTargetArchitectures: 3
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: E:/UnityProjects/agrifertAndroidKeystore.keystore
-  AndroidKeyaliasName: agrifertandroidkeystore
+  AndroidKeystoreName: C:/Users/Marat/Desktop/AGRIFERT_ANDROID_KEYS.keystore
+  AndroidKeyaliasName: 
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
   AndroidIsGame: 1

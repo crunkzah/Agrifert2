@@ -50,8 +50,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugItem: {fileID: 0}
   debugLabel: {fileID: 0}
-  calculatedItemPrefab: {fileID: 0}
-  labelItemPrefab: {fileID: 0}
+  calculatedItemPrefab: {fileID: 715223898145318801, guid: 1f10c0fe159c37a4e9de4a79a0fe2f48,
+    type: 3}
+  labelItemPrefab: {fileID: 5645043014562248089, guid: 14ac3c726adc9f447902470fb6a4dab9,
+    type: 3}
   content_rect: {fileID: 0}
   panel_parent: {fileID: 0}
   results_label: {fileID: 0}
@@ -263,6 +265,83 @@ MonoBehaviour:
     vegetation: 0.5
     price: 465
     index: 28
+  - name: Xlopchatnik_melafen
+    culture: 7
+    type: 0
+    seed: 0.08
+    vegetation: 0.01
+    price: 25000
+    index: 29
+  - name: Xlopchatnik_universal
+    culture: 7
+    type: 1
+    seed: 0
+    vegetation: 2
+    price: 365
+    index: 30
+  - name: Xlopchatnik_bor
+    culture: 7
+    type: 2
+    seed: 0
+    vegetation: 0
+    price: 465
+    index: 31
+  - name: Xlopchatnik_marganec
+    culture: 7
+    type: 4
+    seed: 0
+    vegetation: 0.5
+    price: 465
+    index: 32
+  - name: Xlopchatnik_med
+    culture: 7
+    type: 3
+    seed: 0
+    vegetation: 0.5
+    price: 465
+    index: 33
+  - name: Xlopchatnik_zink
+    culture: 7
+    type: 5
+    seed: 0
+    vegetation: 0.5
+    price: 465
+    index: 34
+  - name: Svekla_melafen
+    culture: 8
+    type: 0
+    seed: 0
+    vegetation: 0.03
+    price: 25000
+    index: 35
+  - name: Svekla_universal
+    culture: 8
+    type: 1
+    seed: 0
+    vegetation: 1.5
+    price: 365
+    index: 36
+  - name: Svekla_bor
+    culture: 8
+    type: 2
+    seed: 0
+    vegetation: 1.5
+    price: 465
+    index: 37
+  - name: Svekla_marganec
+    culture: 8
+    type: 4
+    seed: 0
+    vegetation: 0.5
+    price: 465
+    index: 38
+  - name: Svekla_med
+    culture: 8
+    type: 3
+    seed: 0
+    vegetation: 0.5
+    price: 465
+    index: 39
   current_culture: 0
   current_weight: 0
   standard_per_ha: 0
