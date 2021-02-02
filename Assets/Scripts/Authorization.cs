@@ -91,12 +91,14 @@ public class Authorization : MonoBehaviour
         loginButton_tmp.SetText("Войти");
         loginButton_img.color = new Color(47f/255f, 128f/255f, 54f/255f);
         proceedButton_obj.SetActive(false);
+        makeStandardsButton_obj.SetActive(false);
     }
     
     
     public TextMeshProUGUI loginButton_tmp;
     public Image loginButton_img;
     public GameObject proceedButton_obj;
+    public GameObject makeStandardsButton_obj;
     
     void OnEnable()
     {
@@ -125,6 +127,7 @@ public class Authorization : MonoBehaviour
         {
             Logout();
             proceedButton_obj.SetActive(false);
+            makeStandardsButton_obj.SetActive(false);
         }
     }
     
@@ -179,6 +182,8 @@ public class Authorization : MonoBehaviour
         SignedIn = true;
         loginInputField.SetTextWithoutNotify(currentLogin);
         proceedButton_obj.SetActive(true);
+        makeStandardsButton_obj.SetActive(true);
+        
         SayLoginMessage("<color=#2F8036>Вы вошли!</color>");
         loginButton_tmp.SetText("Выйти");
         loginButton_img.color = new Color(1f, 140F/255F, 120F/255F);

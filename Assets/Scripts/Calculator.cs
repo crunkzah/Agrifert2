@@ -9,9 +9,13 @@ using TMPro;
 
 //0-3 Озимая пшеница
 //4-6 Соя
-//8-10 Рапс
+//7-10 Рапс
 //11-16 Картофель
 //17-22 Кукуруза
+//23-28 Подсолнечник
+//29-34 Хлопчатник
+//35-39 Свекла
+
 public enum Culture
 {
     None,
@@ -50,6 +54,18 @@ public struct Standard
 
 public class Calculator : MonoBehaviour
 {
+    
+    static Calculator instance;
+    public static Calculator Singleton()
+    {
+        if(instance == null)
+        {
+            instance = FindObjectOfType<Calculator>();
+        }
+        
+        return instance;
+    }
+    
     public GameObject debugItem;
     public GameObject debugLabel;
     
@@ -84,9 +100,19 @@ public class Calculator : MonoBehaviour
     
     CultureInfo ci;
     
+    
+    
     void Start()
     {
-        //SaveStandards();
+        int isFirstTime = PlayerPrefs.GetInt("FirstTime", 1);
+        if(isFirstTime == 1)
+        {
+            SaveAllStandards();
+            PlayerPrefs.SetInt("FirstTime", -1);
+        }
+        
+        // PlayerPrefs.DeleteAll();
+        // PlayerPrefs.Save();
         
         ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
         ci.NumberFormat.CurrencyDecimalSeparator = ".";
@@ -1277,7 +1303,7 @@ public class Calculator : MonoBehaviour
         return Result.ToString();
     }
     
-    void ReadStandards(Culture cult)
+    public void ReadStandardsFromDisk(Culture cult)
     {
         switch(cult)
         {
@@ -1287,82 +1313,82 @@ public class Calculator : MonoBehaviour
             }
             case(Culture.Ozimaya_pshenica):
             {
-                standards[0] = ReadSingleStandard(standards[0].name);
-                standards[1] = ReadSingleStandard(standards[1].name);
-                standards[2] = ReadSingleStandard(standards[2].name);
-                standards[3] = ReadSingleStandard(standards[3].name);
+                standards[0] = ReadSingleStandardFromDisk(standards[0].name);
+                standards[1] = ReadSingleStandardFromDisk(standards[1].name);
+                standards[2] = ReadSingleStandardFromDisk(standards[2].name);
+                standards[3] = ReadSingleStandardFromDisk(standards[3].name);
                 
                 break;
             }
             case(Culture.Soy):
             {
-                standards[4] = ReadSingleStandard(standards[4].name);
-                standards[5] = ReadSingleStandard(standards[5].name);
-                standards[6] = ReadSingleStandard(standards[6].name);
+                standards[4] = ReadSingleStandardFromDisk(standards[4].name);
+                standards[5] = ReadSingleStandardFromDisk(standards[5].name);
+                standards[6] = ReadSingleStandardFromDisk(standards[6].name);
                 
                 break;
             }
             case(Culture.Raps):
             {
-                standards[7] = ReadSingleStandard(standards[7].name);
-                standards[8] = ReadSingleStandard(standards[8].name);
-                standards[9] = ReadSingleStandard(standards[9].name);
-                standards[10] = ReadSingleStandard(standards[10].name);
+                standards[7] = ReadSingleStandardFromDisk(standards[7].name);
+                standards[8] = ReadSingleStandardFromDisk(standards[8].name);
+                standards[9] = ReadSingleStandardFromDisk(standards[9].name);
+                standards[10] = ReadSingleStandardFromDisk(standards[10].name);
                 
                 break;
             }
             case(Culture.Kartofel):
             {
-                standards[11] = ReadSingleStandard(standards[11].name);
-                standards[12] = ReadSingleStandard(standards[12].name);
-                standards[13] = ReadSingleStandard(standards[13].name);
-                standards[14] = ReadSingleStandard(standards[14].name);
-                standards[15] = ReadSingleStandard(standards[15].name);
-                standards[16] = ReadSingleStandard(standards[16].name);
+                standards[11] = ReadSingleStandardFromDisk(standards[11].name);
+                standards[12] = ReadSingleStandardFromDisk(standards[12].name);
+                standards[13] = ReadSingleStandardFromDisk(standards[13].name);
+                standards[14] = ReadSingleStandardFromDisk(standards[14].name);
+                standards[15] = ReadSingleStandardFromDisk(standards[15].name);
+                standards[16] = ReadSingleStandardFromDisk(standards[16].name);
                 
                 
                 break;
             }
             case(Culture.Kukuruza):
             {
-                standards[17] = ReadSingleStandard(standards[17].name);
-                standards[18] = ReadSingleStandard(standards[18].name);
-                standards[19] = ReadSingleStandard(standards[19].name);
-                standards[20] = ReadSingleStandard(standards[20].name);
-                standards[21] = ReadSingleStandard(standards[21].name);
-                standards[22] = ReadSingleStandard(standards[22].name);
+                standards[17] = ReadSingleStandardFromDisk(standards[17].name);
+                standards[18] = ReadSingleStandardFromDisk(standards[18].name);
+                standards[19] = ReadSingleStandardFromDisk(standards[19].name);
+                standards[20] = ReadSingleStandardFromDisk(standards[20].name);
+                standards[21] = ReadSingleStandardFromDisk(standards[21].name);
+                standards[22] = ReadSingleStandardFromDisk(standards[22].name);
                 
                 break;
             }
             case(Culture.Podsolnechnik):
             {
-                standards[23] = ReadSingleStandard(standards[23].name);
-                standards[24] = ReadSingleStandard(standards[24].name);
-                standards[25] = ReadSingleStandard(standards[25].name);
-                standards[26] = ReadSingleStandard(standards[26].name);
-                standards[27] = ReadSingleStandard(standards[27].name);
-                standards[28] = ReadSingleStandard(standards[28].name);
+                standards[23] = ReadSingleStandardFromDisk(standards[23].name);
+                standards[24] = ReadSingleStandardFromDisk(standards[24].name);
+                standards[25] = ReadSingleStandardFromDisk(standards[25].name);
+                standards[26] = ReadSingleStandardFromDisk(standards[26].name);
+                standards[27] = ReadSingleStandardFromDisk(standards[27].name);
+                standards[28] = ReadSingleStandardFromDisk(standards[28].name);
                 
                 break;
             }
             case(Culture.Xlopchatnik):
             {
-                standards[29] = ReadSingleStandard(standards[29].name);
-                standards[30] = ReadSingleStandard(standards[30].name);
-                standards[31] = ReadSingleStandard(standards[31].name);
-                standards[32] = ReadSingleStandard(standards[32].name);
-                standards[33] = ReadSingleStandard(standards[33].name);
-                standards[34] = ReadSingleStandard(standards[34].name);
+                standards[29] = ReadSingleStandardFromDisk(standards[29].name);
+                standards[30] = ReadSingleStandardFromDisk(standards[30].name);
+                standards[31] = ReadSingleStandardFromDisk(standards[31].name);
+                standards[32] = ReadSingleStandardFromDisk(standards[32].name);
+                standards[33] = ReadSingleStandardFromDisk(standards[33].name);
+                standards[34] = ReadSingleStandardFromDisk(standards[34].name);
                 
                 break;
             }
             case(Culture.Svekla):
             {
-                standards[35] = ReadSingleStandard(standards[35].name);
-                standards[36] = ReadSingleStandard(standards[36].name);
-                standards[37] = ReadSingleStandard(standards[37].name);
-                standards[38] = ReadSingleStandard(standards[38].name);
-                standards[39] = ReadSingleStandard(standards[39].name);
+                standards[35] = ReadSingleStandardFromDisk(standards[35].name);
+                standards[36] = ReadSingleStandardFromDisk(standards[36].name);
+                standards[37] = ReadSingleStandardFromDisk(standards[37].name);
+                standards[38] = ReadSingleStandardFromDisk(standards[38].name);
+                standards[39] = ReadSingleStandardFromDisk(standards[39].name);
                 
                 break;
             }
@@ -1372,7 +1398,7 @@ public class Calculator : MonoBehaviour
         
     }
     
-    Standard ReadSingleStandard(string _name)
+    Standard ReadSingleStandardFromDisk(string _name)
     {
         string standardAsString;
         Standard st;
@@ -1383,7 +1409,19 @@ public class Calculator : MonoBehaviour
         return st;
     }
     
-    public void SaveStandards()
+    public void SaveStandardsIndexSection(int start, int end)
+    {
+        for(int i = start; i <= end; i++)
+        {
+            string standard = JsonUtility.ToJson(standards[i]);
+            PlayerPrefs.SetString(standards[i].name, standard);
+        }
+        
+        PlayerPrefs.Save();
+        Debug.Log(string.Format("<color=green>Saved</color> from <color=yellow>{0}</color> to <color=yellow>{1}</color> standards!", start, end));
+    }
+    
+    public void SaveAllStandards()
     {
         for(int i = 0; i < standards.Length; i++)
         {
@@ -1392,7 +1430,26 @@ public class Calculator : MonoBehaviour
         }
         
         PlayerPrefs.Save();
-        Debug.Log("<color=green>Saved</color> standards!");
+        Debug.Log("<color=green>Saved</color> <color=yellow>ALL</color> standards!");
     }
     
+    
+    [Header("Backup:")]
+    public Standard[] backupStandards;
+    
+    
+    public void MakeStandardsBackupSection(int start, int end)
+    {
+        for(int i = start; i <= end; i++)
+        {
+            standards[i] = backupStandards[i];
+        }
+        Debug.Log(string.Format("<color=green>MakeStandardsBackupSection</color> from <color=yellow>{0}</color> to <color=yellow>{1}</color> standards!", start, end));
+    }
+    
+    public void MakeStandardsBackup()
+    {
+        backupStandards = (Standard[])standards.Clone();
+    }
+        
 }
