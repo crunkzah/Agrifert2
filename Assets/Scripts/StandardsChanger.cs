@@ -117,9 +117,12 @@ public class StandardsChanger : MonoBehaviour
         }
     }
     
+    CultureInfo ci;
+    
     void Awake()
     {
-        
+        ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+        ci.NumberFormat.CurrencyDecimalSeparator = ".";
     }
     
     
@@ -300,17 +303,17 @@ public class StandardsChanger : MonoBehaviour
             case(Culture.Ozimaya_pshenica):
             {
                 
-                Calculator.Singleton().standards[0].seed = float.Parse(ozimayaPshenica.standardChangerBlock.seed_melafen_inputField.text);
-                Calculator.Singleton().standards[0].vegetation = float.Parse(ozimayaPshenica.standardChangerBlock.veg_melafen_inputField.text);
+                Calculator.Singleton().standards[0].seed = float.Parse(ozimayaPshenica.standardChangerBlock.seed_melafen_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[0].vegetation = float.Parse(ozimayaPshenica.standardChangerBlock.veg_melafen_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[1].seed = float.Parse(ozimayaPshenica.standardChangerBlock.seed_metallocenUniversal_inputField.text);
-                Calculator.Singleton().standards[1].vegetation = float.Parse(ozimayaPshenica.standardChangerBlock.veg_metallocenUniversal_inputField.text);
+                Calculator.Singleton().standards[1].seed = float.Parse(ozimayaPshenica.standardChangerBlock.seed_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[1].vegetation = float.Parse(ozimayaPshenica.standardChangerBlock.veg_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[2].seed = float.Parse(ozimayaPshenica.standardChangerBlock.seed_metallocenBor_inputField.text);
-                Calculator.Singleton().standards[2].vegetation = float.Parse(ozimayaPshenica.standardChangerBlock.veg_metallocenBor_inputField.text);
+                Calculator.Singleton().standards[2].seed = float.Parse(ozimayaPshenica.standardChangerBlock.seed_metallocenBor_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[2].vegetation = float.Parse(ozimayaPshenica.standardChangerBlock.veg_metallocenBor_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[3].seed = float.Parse(ozimayaPshenica.standardChangerBlock.seed_metallocenMed_inputField.text);
-                Calculator.Singleton().standards[3].vegetation = float.Parse(ozimayaPshenica.standardChangerBlock.veg_metallocenMed_inputField.text);
+                Calculator.Singleton().standards[3].seed = float.Parse(ozimayaPshenica.standardChangerBlock.seed_metallocenMed_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[3].vegetation = float.Parse(ozimayaPshenica.standardChangerBlock.veg_metallocenMed_inputField.text, NumberStyles.Any, ci);
                 
                 Calculator.Singleton().SaveStandardsIndexSection(0, 3);
                 
@@ -318,14 +321,14 @@ public class StandardsChanger : MonoBehaviour
             }
             case(Culture.Soy):
             {
-                Calculator.Singleton().standards[4].seed = float.Parse(soy.standardChangerBlock.seed_melafen_inputField.text);
-                Calculator.Singleton().standards[4].vegetation = float.Parse(soy.standardChangerBlock.veg_melafen_inputField.text);
+                Calculator.Singleton().standards[4].seed = float.Parse(soy.standardChangerBlock.seed_melafen_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[4].vegetation = float.Parse(soy.standardChangerBlock.veg_melafen_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[5].seed = float.Parse(soy.standardChangerBlock.seed_metallocenUniversal_inputField.text);
-                Calculator.Singleton().standards[5].vegetation = float.Parse(soy.standardChangerBlock.veg_metallocenUniversal_inputField.text);
+                Calculator.Singleton().standards[5].seed = float.Parse(soy.standardChangerBlock.seed_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[5].vegetation = float.Parse(soy.standardChangerBlock.veg_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[6].seed = float.Parse(soy.standardChangerBlock.seed_metallocenBor_inputField.text);
-                Calculator.Singleton().standards[6].vegetation = float.Parse(soy.standardChangerBlock.veg_metallocenBor_inputField.text);
+                Calculator.Singleton().standards[6].seed = float.Parse(soy.standardChangerBlock.seed_metallocenBor_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[6].vegetation = float.Parse(soy.standardChangerBlock.veg_metallocenBor_inputField.text, NumberStyles.Any, ci);
                 
                 Calculator.Singleton().SaveStandardsIndexSection(4, 6);
                 
@@ -333,34 +336,34 @@ public class StandardsChanger : MonoBehaviour
             }
             case(Culture.Raps):
             {
-                Calculator.Singleton().standards[7].seed = float.Parse(raps.standardChangerBlock.seed_melafen_inputField.text);
-                Calculator.Singleton().standards[7].vegetation = float.Parse(raps.standardChangerBlock.veg_melafen_inputField.text);
+                Calculator.Singleton().standards[7].seed = float.Parse(raps.standardChangerBlock.seed_melafen_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[7].vegetation = float.Parse(raps.standardChangerBlock.veg_melafen_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[8].seed = float.Parse(raps.standardChangerBlock.seed_metallocenUniversal_inputField.text);
-                Calculator.Singleton().standards[8].vegetation = float.Parse(raps.standardChangerBlock.veg_metallocenUniversal_inputField.text);
+                Calculator.Singleton().standards[8].seed = float.Parse(raps.standardChangerBlock.seed_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[8].vegetation = float.Parse(raps.standardChangerBlock.veg_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[9].seed = float.Parse(raps.standardChangerBlock.seed_metallocenBor_inputField.text);
-                Calculator.Singleton().standards[9].vegetation = float.Parse(raps.standardChangerBlock.veg_metallocenBor_inputField.text);
+                Calculator.Singleton().standards[9].seed = float.Parse(raps.standardChangerBlock.seed_metallocenBor_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[9].vegetation = float.Parse(raps.standardChangerBlock.veg_metallocenBor_inputField.text, NumberStyles.Any, ci);
                 
                 Calculator.Singleton().SaveStandardsIndexSection(7, 9);
                 break;
             }
             case(Culture.Kartofel):
             {
-                Calculator.Singleton().standards[11].seed = float.Parse(kartofel.standardChangerBlock.seed_melafen_inputField.text);
-                Calculator.Singleton().standards[11].vegetation = float.Parse(kartofel.standardChangerBlock.veg_melafen_inputField.text);
+                Calculator.Singleton().standards[11].seed = float.Parse(kartofel.standardChangerBlock.seed_melafen_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[11].vegetation = float.Parse(kartofel.standardChangerBlock.veg_melafen_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[12].seed = float.Parse(kartofel.standardChangerBlock.seed_metallocenUniversal_inputField.text);
-                Calculator.Singleton().standards[12].vegetation = float.Parse(kartofel.standardChangerBlock.veg_metallocenUniversal_inputField.text);
+                Calculator.Singleton().standards[12].seed = float.Parse(kartofel.standardChangerBlock.seed_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[12].vegetation = float.Parse(kartofel.standardChangerBlock.veg_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[13].seed = float.Parse(kartofel.standardChangerBlock.seed_metallocenBor_inputField.text);
-                Calculator.Singleton().standards[13].vegetation = float.Parse(kartofel.standardChangerBlock.veg_metallocenBor_inputField.text);
+                Calculator.Singleton().standards[13].seed = float.Parse(kartofel.standardChangerBlock.seed_metallocenBor_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[13].vegetation = float.Parse(kartofel.standardChangerBlock.veg_metallocenBor_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[15].seed = float.Parse(kartofel.standardChangerBlock.seed_metallocenMed_inputField.text);
-                Calculator.Singleton().standards[15].vegetation = float.Parse(kartofel.standardChangerBlock.veg_metallocenMed_inputField.text);
+                Calculator.Singleton().standards[15].seed = float.Parse(kartofel.standardChangerBlock.seed_metallocenMed_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[15].vegetation = float.Parse(kartofel.standardChangerBlock.veg_metallocenMed_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[16].seed = float.Parse(kartofel.standardChangerBlock.seed_metallocenZink_inputField.text);
-                Calculator.Singleton().standards[16].vegetation = float.Parse(kartofel.standardChangerBlock.veg_metallocenZink_inputField.text);
+                Calculator.Singleton().standards[16].seed = float.Parse(kartofel.standardChangerBlock.seed_metallocenZink_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[16].vegetation = float.Parse(kartofel.standardChangerBlock.veg_metallocenZink_inputField.text, NumberStyles.Any, ci);
                 
                 Calculator.Singleton().SaveStandardsIndexSection(11, 13);
                 Calculator.Singleton().SaveStandardsIndexSection(15, 16);
@@ -368,55 +371,55 @@ public class StandardsChanger : MonoBehaviour
             }
             case(Culture.Kukuruza):
             {
-                Calculator.Singleton().standards[17].seed = float.Parse(kukuruza.standardChangerBlock.seed_melafen_inputField.text);
-                Calculator.Singleton().standards[17].vegetation = float.Parse(kukuruza.standardChangerBlock.veg_melafen_inputField.text);
+                Calculator.Singleton().standards[17].seed = float.Parse(kukuruza.standardChangerBlock.seed_melafen_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[17].vegetation = float.Parse(kukuruza.standardChangerBlock.veg_melafen_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[18].seed = float.Parse(kukuruza.standardChangerBlock.seed_metallocenUniversal_inputField.text);
-                Calculator.Singleton().standards[18].vegetation = float.Parse(kukuruza.standardChangerBlock.veg_metallocenUniversal_inputField.text);
+                Calculator.Singleton().standards[18].seed = float.Parse(kukuruza.standardChangerBlock.seed_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[18].vegetation = float.Parse(kukuruza.standardChangerBlock.veg_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[22].seed = float.Parse(kukuruza.standardChangerBlock.seed_metallocenZink_inputField.text);
-                Calculator.Singleton().standards[22].vegetation = float.Parse(kukuruza.standardChangerBlock.veg_metallocenZink_inputField.text);
+                Calculator.Singleton().standards[22].seed = float.Parse(kukuruza.standardChangerBlock.seed_metallocenZink_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[22].vegetation = float.Parse(kukuruza.standardChangerBlock.veg_metallocenZink_inputField.text, NumberStyles.Any, ci);
                 
                 break;
             }
             case(Culture.Podsolnechnik):
             {
-                Calculator.Singleton().standards[23].seed = float.Parse(podsolnechnik.standardChangerBlock.seed_melafen_inputField.text);
-                Calculator.Singleton().standards[23].vegetation = float.Parse(podsolnechnik.standardChangerBlock.veg_melafen_inputField.text);
+                Calculator.Singleton().standards[23].seed = float.Parse(podsolnechnik.standardChangerBlock.seed_melafen_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[23].vegetation = float.Parse(podsolnechnik.standardChangerBlock.veg_melafen_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[24].seed = float.Parse(podsolnechnik.standardChangerBlock.seed_metallocenUniversal_inputField.text);
-                Calculator.Singleton().standards[24].vegetation = float.Parse(podsolnechnik.standardChangerBlock.veg_metallocenUniversal_inputField.text);
+                Calculator.Singleton().standards[24].seed = float.Parse(podsolnechnik.standardChangerBlock.seed_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[24].vegetation = float.Parse(podsolnechnik.standardChangerBlock.veg_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[25].seed = float.Parse(podsolnechnik.standardChangerBlock.seed_metallocenBor_inputField.text);
-                Calculator.Singleton().standards[25].vegetation = float.Parse(podsolnechnik.standardChangerBlock.veg_metallocenBor_inputField.text);
+                Calculator.Singleton().standards[25].seed = float.Parse(podsolnechnik.standardChangerBlock.seed_metallocenBor_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[25].vegetation = float.Parse(podsolnechnik.standardChangerBlock.veg_metallocenBor_inputField.text, NumberStyles.Any, ci);
                 
                 break;
             }
             case(Culture.Xlopchatnik):
             {
-                Calculator.Singleton().standards[29].seed = float.Parse(xlopchatnik.standardChangerBlock.seed_melafen_inputField.text);
-                Calculator.Singleton().standards[29].vegetation = float.Parse(xlopchatnik.standardChangerBlock.veg_melafen_inputField.text);
+                Calculator.Singleton().standards[29].seed = float.Parse(xlopchatnik.standardChangerBlock.seed_melafen_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[29].vegetation = float.Parse(xlopchatnik.standardChangerBlock.veg_melafen_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[30].seed = float.Parse(xlopchatnik.standardChangerBlock.seed_metallocenUniversal_inputField.text);
-                Calculator.Singleton().standards[30].vegetation = float.Parse(xlopchatnik.standardChangerBlock.veg_metallocenUniversal_inputField.text);
+                Calculator.Singleton().standards[30].seed = float.Parse(xlopchatnik.standardChangerBlock.seed_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[30].vegetation = float.Parse(xlopchatnik.standardChangerBlock.veg_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
                 break;
             }
             case(Culture.Svekla):
             {
-                Calculator.Singleton().standards[35].seed = float.Parse(svekla.standardChangerBlock.seed_melafen_inputField.text);
-                Calculator.Singleton().standards[35].vegetation = float.Parse(svekla.standardChangerBlock.veg_melafen_inputField.text);
+                Calculator.Singleton().standards[35].seed = float.Parse(svekla.standardChangerBlock.seed_melafen_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[35].vegetation = float.Parse(svekla.standardChangerBlock.veg_melafen_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[36].seed = float.Parse(svekla.standardChangerBlock.seed_metallocenUniversal_inputField.text);
-                Calculator.Singleton().standards[36].vegetation = float.Parse(svekla.standardChangerBlock.veg_metallocenUniversal_inputField.text);
+                Calculator.Singleton().standards[36].seed = float.Parse(svekla.standardChangerBlock.seed_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[36].vegetation = float.Parse(svekla.standardChangerBlock.veg_metallocenUniversal_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[37].seed = float.Parse(svekla.standardChangerBlock.seed_metallocenBor_inputField.text);
-                Calculator.Singleton().standards[37].vegetation = float.Parse(svekla.standardChangerBlock.veg_metallocenBor_inputField.text);
+                Calculator.Singleton().standards[37].seed = float.Parse(svekla.standardChangerBlock.seed_metallocenBor_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[37].vegetation = float.Parse(svekla.standardChangerBlock.veg_metallocenBor_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[38].seed = float.Parse(svekla.standardChangerBlock.seed_metallocenMarganec_inputField.text);
-                Calculator.Singleton().standards[38].vegetation = float.Parse(svekla.standardChangerBlock.veg_metallocenMarganec_inputField.text);
+                Calculator.Singleton().standards[38].seed = float.Parse(svekla.standardChangerBlock.seed_metallocenMarganec_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[38].vegetation = float.Parse(svekla.standardChangerBlock.veg_metallocenMarganec_inputField.text, NumberStyles.Any, ci);
                 
-                Calculator.Singleton().standards[39].seed = float.Parse(svekla.standardChangerBlock.seed_metallocenZink_inputField.text);
-                Calculator.Singleton().standards[39].vegetation = float.Parse(svekla.standardChangerBlock.veg_metallocenZink_inputField.text);
+                Calculator.Singleton().standards[39].seed = float.Parse(svekla.standardChangerBlock.seed_metallocenZink_inputField.text, NumberStyles.Any, ci);
+                Calculator.Singleton().standards[39].vegetation = float.Parse(svekla.standardChangerBlock.veg_metallocenZink_inputField.text, NumberStyles.Any, ci);
                 break;
             }
             
