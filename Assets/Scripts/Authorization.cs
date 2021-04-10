@@ -36,8 +36,8 @@ public class Authorization : MonoBehaviour
     
     void Awake()
     {
-        //logPassPair.Add("admin",  "dx3C5CGW");
-        logPassPair.Add("admin",  "12091209");
+        logPassPair.Add("admin",  "dx3C5CGW");
+        //logPassPair.Add("admin",  "12091209");
         
         logPassPair.Add("Nikolay", "ba0dpldg");
         logPassPair.Add("Lilya", "88svd91w");
