@@ -100,6 +100,9 @@ public class Calculator : MonoBehaviour
     
     CultureInfo ci;
     
+    string ExportSpecifier = "G";
+    CultureInfo ExportCulture = CultureInfo.CreateSpecificCulture("eu-ES");
+    
     
     
     void Start()
@@ -264,12 +267,14 @@ public class Calculator : MonoBehaviour
             case Culture.None:
             {
                 ClearResults();
+                canExport = false;
                 break;
             }
             case Culture.Ozimaya_pshenica:
             {
                 ReadInput();
                 Result_Ozimaya_pshenica();
+                canExport = true;
                 UI_Manager.ShowMessage("Расчет произведен!");
                 
                 break;
@@ -278,6 +283,7 @@ public class Calculator : MonoBehaviour
             {
                 ReadInput();
                 Result_Soy();
+                canExport = true;
                 UI_Manager.ShowMessage("Расчет произведен!");
                 
                 break;
@@ -286,6 +292,7 @@ public class Calculator : MonoBehaviour
             {
                 ReadInput();
                 Result_Raps();
+                canExport = true;
                 UI_Manager.ShowMessage("Расчет произведен!");
                 
                 break;
@@ -294,6 +301,7 @@ public class Calculator : MonoBehaviour
             {
                 ReadInput();
                 Result_Kartofel();
+                canExport = true;
                 UI_Manager.ShowMessage("Расчет произведен!");
                 
                 break;
@@ -302,6 +310,7 @@ public class Calculator : MonoBehaviour
             {
                 ReadInput();
                 Result_Kukuruza();
+                canExport = true;
                 UI_Manager.ShowMessage("Расчет произведен!");
                 
                 break;
@@ -310,6 +319,7 @@ public class Calculator : MonoBehaviour
             {
                 ReadInput();
                 Result_Podsolnechnik();
+                canExport = true;
                 UI_Manager.ShowMessage("Расчет произведен!");
                 
                 break;
@@ -318,6 +328,7 @@ public class Calculator : MonoBehaviour
             {
                 ReadInput();
                 Result_Xlopchatnik();
+                canExport = true;
                 UI_Manager.ShowMessage("Расчет произведен!");
                 
                 break;
@@ -326,6 +337,7 @@ public class Calculator : MonoBehaviour
             {
                 ReadInput();
                 Result_Svekla();
+                canExport = true;
                 UI_Manager.ShowMessage("Расчет произведен!");
                 
                 break;
@@ -938,6 +950,11 @@ public class Calculator : MonoBehaviour
         FitContentSize(delta_height);
     }
     
+    
+    public bool canExport = false;
+    
+    
+    
     void Result_Soy()
     {
         ClearResults();
@@ -1026,9 +1043,17 @@ public class Calculator : MonoBehaviour
         FitContentSize(delta_height);
     }
     
+    public string FormatForExport(float a)
+    {
+        return a.ToString(ExportSpecifier, ExportCulture);
+        
+    }
+    
     void Result_Ozimaya_pshenica()
     {
         ClearResults();
+        
+        export_buffer.Clear();
         
         
         GameObject item;
@@ -1041,6 +1066,8 @@ public class Calculator : MonoBehaviour
         float sum1 = 0;
         {
             string txt = "Обработка семян: ";
+            export_buffer.AppendLine(txt);
+            
             MakeLabel(txt, ref current_y, ref delta_height);
         }
         {
@@ -1055,8 +1082,14 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(seed_melafen_v));
             ci.price.SetText(FormatPrice(seed_melafen_price));
             
+            export_buffer.AppendLine("Мелафен:");
+            export_buffer.AppendLine(FormatLitres(seed_melafen_v));
+            export_buffer.AppendLine(FormatPrice(seed_melafen_price));
+            
             sum1 += seed_melafen_price;
         }
+        
+        
         
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -1069,17 +1102,28 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(seed_universal_v));
             ci.price.SetText(FormatPrice(seed_universal_price));
             
+            export_buffer.AppendLine("Универсал:");
+            export_buffer.AppendLine(FormatForExport(seed_universal_v));
+            export_buffer.AppendLine(FormatForExport(seed_universal_price));
+            
             sum1 += seed_universal_price;
         }
+        export_buffer.AppendLine(System.Environment.NewLine);
         {
             string txt = "Итого: " + FormatPrice(sum1);
             GameObject sum_label = MakeLabel(txt, ref current_y, ref delta_height);
             sum_label.GetComponent<Image>().color = new Color(188f/255f, 217f/255f, 67f/255f);
+            
+            export_buffer.AppendLine(txt);
         }
+        export_buffer.AppendLine(System.Environment.NewLine);
         {
             string txt = "Обработки по вегетации, фазы: кущения, выход в трубку, колошения: ";
             MakeLabel(txt, ref current_y, ref delta_height);
+            
+            export_buffer.AppendLine(txt);
         }
+        export_buffer.AppendLine(System.Environment.NewLine);
         float sum2 = 0;
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -1093,7 +1137,12 @@ public class Calculator : MonoBehaviour
             ci.price.SetText(FormatPrice(veg_melafen_price));
             
             sum2 += veg_melafen_price;
+            
+            export_buffer.AppendLine("Мелафен:");
+            export_buffer.AppendLine(FormatForExport(veg_melafen_v));
+            export_buffer.AppendLine(FormatForExport(veg_melafen_price));
         }
+        export_buffer.AppendLine(System.Environment.NewLine);
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
             ci = item.GetComponent<CalculatedItem>();
@@ -1105,7 +1154,12 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(veg_universal_v));
             ci.price.SetText(FormatPrice(veg_universal_price));
             sum2 += veg_universal_price;
+            
+            export_buffer.AppendLine("Универсал:");
+            export_buffer.AppendLine(FormatForExport(veg_universal_v));
+            export_buffer.AppendLine(FormatForExport(veg_universal_price));
         }
+        export_buffer.AppendLine(System.Environment.NewLine);
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
             ci = item.GetComponent<CalculatedItem>();
@@ -1118,7 +1172,12 @@ public class Calculator : MonoBehaviour
             ci.price.SetText(FormatPrice(veg_bor_price));
             
             sum2 += veg_bor_price;
+            
+            export_buffer.AppendLine("Бор и Молибден:");
+            export_buffer.AppendLine(FormatForExport(veg_bor_v));
+            export_buffer.AppendLine(FormatForExport(veg_bor_price));
         }
+        export_buffer.AppendLine(System.Environment.NewLine);
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
             ci = item.GetComponent<CalculatedItem>();
@@ -1131,14 +1190,34 @@ public class Calculator : MonoBehaviour
             ci.price.SetText(FormatPrice(veg_med_price));
             
             sum2 += veg_med_price;
+            
+            export_buffer.AppendLine("Медь:");
+            export_buffer.AppendLine(FormatForExport(veg_med_v));
+            export_buffer.AppendLine(FormatForExport(veg_med_price));
         }
+        export_buffer.AppendLine(System.Environment.NewLine);
         {
             string txt = "Итого: " + FormatPrice(sum2);
             GameObject sum_label = MakeLabel(txt, ref current_y, ref delta_height);
             sum_label.GetComponent<Image>().color = new Color(188f/255f, 217f/255f, 67f/255f);
+            
+            export_buffer.AppendLine("Итого:");
+            export_buffer.AppendLine(FormatForExport(sum2));
         }
         
+        Debug.Log(export_buffer.ToString());
+        
         FitContentSize(delta_height);
+    }
+    
+    StringBuilder export_buffer = new StringBuilder();
+    
+    public void ExportCurrentResults()
+    {
+        if(canExport)
+        {
+                        
+        }
     }
     
     
@@ -1169,27 +1248,6 @@ public class Calculator : MonoBehaviour
         
     }
     
-    // GameObject MakeLabel2(string txt, ref float yCoord, ref float yDeltaHeight)
-    // {
-    //     GameObject label = Instantiate(labelItemPrefab, Vector3.zero, Quaternion.identity, content_rect);
-        
-    //     Label_calculated lc = label.GetComponent<Label_calculated>();
-    //     lc.SetText(txt);
-        
-    //     RectTransform rectTransform;
-    //     calculatedItems.Add(label);
-        
-    //     rectTransform = label.GetComponent<RectTransform>();
-    //     rectTransform.anchoredPosition = new Vector2(0, yCoord);
-    //     rectTransform.sizeDelta = new Vector2(750, y_label_height * 2);
-        
-    //     yCoord -= y_step_size + y_label_height * 2;
-    //     yDeltaHeight -= y_step_size + y_label_height * 2;
-        
-    //     return label;
-        
-    // }
-    
     GameObject MakeCalculatedItem(ref float yCoord, ref float yDeltaHeight)
     {
         GameObject item;
@@ -1212,7 +1270,7 @@ public class Calculator : MonoBehaviour
         string s = FormatMillion((val).ToString());
         StringBuilder sb = new StringBuilder(s);
         
-        sb.Append("  руб");
+        sb.Append(" руб");
         
         return sb.ToString();
     }
@@ -1222,7 +1280,7 @@ public class Calculator : MonoBehaviour
         string s = FormatMillion((val).ToString());
         StringBuilder sb = new StringBuilder(s);
         
-        sb.Append("  руб");
+        sb.Append(" руб");
         
         return sb.ToString();
     }
@@ -1232,7 +1290,7 @@ public class Calculator : MonoBehaviour
         string s = FormatMillion((val).ToString());
         StringBuilder sb = new StringBuilder(s);
         
-        sb.Append("  руб");
+        sb.Append(" руб");
         
         return sb.ToString();
     }
@@ -1283,6 +1341,8 @@ public class Calculator : MonoBehaviour
     {
         StringBuilder Result = new StringBuilder(s);
         
+        //s.Contains(",");
+        
         if(s.Length < 4)
         {
             return s;
@@ -1292,7 +1352,7 @@ public class Calculator : MonoBehaviour
         for(int i = s.Length-1; i >= 0; i--)
         {
             k++;
-            if(k % 3 == 0 && s[i] != '.')
+            if(k % 3 == 0 && s[i] != '.' && s[i] != ',')
             {
                 k = 0;
                 if(i != 0)

@@ -70,6 +70,14 @@ public class UI_Manager : MonoBehaviour
     
     public void Start()
     {
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        sb.AppendLine("Line 1");
+        sb.AppendLine("Hello Sailor, unforunately there is a radio in my head.");
+        sb.AppendLine("Line 2");
+        
+        SaveSystem.SaveTxt(sb, "This_is_text_file");
+        
+        
         SwitchPageWithoutAnimation(startPage);
         
                 
