@@ -7,8 +7,9 @@ public class MessageLabel : MonoBehaviour
     TextMeshProUGUI tmp;
     Image img;
     
+    public const float fadeTime_default = 2.5F;
     
-    float fadeTime = 1.25f;
+    float fadeTime = 2.5F;
     
     
     void Awake()
@@ -30,8 +31,9 @@ public class MessageLabel : MonoBehaviour
         return Result;
     }
     
-    public void ShowMessage(string msg)
+    public void ShowMessage(string msg, float time = fadeTime_default)
     {
+        fadeTime = time;
         this.gameObject.SetActive(true);
         
         tmp.SetText(msg);

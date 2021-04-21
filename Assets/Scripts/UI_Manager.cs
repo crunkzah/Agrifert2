@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.IO;
 
 public class UI_Manager : MonoBehaviour
 {
@@ -21,14 +22,16 @@ public class UI_Manager : MonoBehaviour
         return _instance;
     }
     
-    public static void ShowMessage(string msg)
+    public static void ShowMessage(string msg, float msg_fadeTime = msg_fadeTime_default)
     {
-       Singleton()._ShowMessage(msg);
+       Singleton()._ShowMessage(msg, msg_fadeTime);
     }
     
-    void _ShowMessage(string msg)
+    const float msg_fadeTime_default = MessageLabel.fadeTime_default;
+    
+    void _ShowMessage(string msg, float msg_fadeTime = msg_fadeTime_default)
     {
-        message.ShowMessage(msg);
+        message.ShowMessage(msg, msg_fadeTime);
     }
     
     [Header("Objects in footer:")]
@@ -68,21 +71,28 @@ public class UI_Manager : MonoBehaviour
         Application.OpenURL("tel://[+79625590001]");
     }
     
+    void PrepareSaveDirectory()
+    {
+        string savePath = Application.persistentDataPath;
+        string dir_name = "Agrifert_exported_results";
+        
+//        Debug.Log(string.Format("Path.DirectorySeparatorChar: {0}", Path.DirectorySeparatorChar));
+        
+        if(!Directory.Exists(savePath + Path.DirectorySeparatorChar + dir_name))
+        {
+            Directory.CreateDirectory(savePath + Path.DirectorySeparatorChar + dir_name);
+        }
+    }
+    
     public void Start()
     {
+        PrepareSaveDirectory();
+                
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
-        sb.AppendLine("Line 1");
-        sb.AppendLine("Hello Sailor, unforunately there is a radio in my head.");
-        sb.AppendLine("Line 2");
-        
-        SaveSystem.SaveTxt(sb, "This_is_text_file");
-        
         
         SwitchPageWithoutAnimation(startPage);
-        
-                
         screenWidth = Screen.width;
-        maxSpeed = 1080 / timeToAnimate;
+        maxSpeed = 1080F / timeToAnimate;
     }
     [SerializeField] TMPro.TextMeshProUGUI label1;
     [SerializeField] TMPro.TextMeshProUGUI label2;
@@ -180,7 +190,6 @@ public class UI_Manager : MonoBehaviour
         
         if(pageToSwitch != null)
         {
-            
             if(isWorking == false)
             {
                 if(timeToAnimate > 0f)
@@ -258,6 +267,17 @@ public class UI_Manager : MonoBehaviour
         }
         isWorking = false;
         
+    }
+    
+    public void ShowExportedFiles_Button()
+    {
+        string Agrifert_exported_results = "Agrifert_exported_results";
+        
+        string path_to_open = Application.persistentDataPath + Path.DirectorySeparatorChar + Agrifert_exported_results;
+        
+        Debug.Log("<color=yellow>ShowExportedFiles_Button()</color>");
+        
+        Application.OpenURL(path_to_open);
     }
 
     //TODO: Non-linear animation

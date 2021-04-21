@@ -18,7 +18,60 @@ public class CultureItemReader : MonoBehaviour
 
     [SerializeField]  int paragraphs_index = -1;
 
-    
+    public static string GetCultureName(Culture _item)
+    {
+        string Result = "Название_Культуры";
+        
+        switch(_item)
+        {
+            case(Culture.Ozimaya_pshenica):
+            {
+                Result = "ОзимаяПшеница";
+                break;
+            }
+            case(Culture.Kartofel):
+            {
+                Result = "Картофель";
+                break;
+            }
+            case(Culture.Kukuruza):
+            {
+                Result = "Кукуруза";
+                break;
+            }
+            case(Culture.Podsolnechnik):
+            {
+                Result = "Подсолнечник";
+                break;
+            }
+            case(Culture.Raps):
+            {
+                Result = "Рапс";
+                break;
+            }
+            case(Culture.Soy):
+            {
+                Result = "Соя";
+                break;
+            }
+            case(Culture.Svekla):
+            {
+                Result = "СахарнаяСвёкла";
+                break;
+            }
+            case(Culture.Xlopchatnik):
+            {
+                Result = "Хлопчатник";
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+        
+        return Result;
+    }
 
 
     void Awake()
