@@ -15,6 +15,24 @@ public struct StringPair
         v1 = _v1;
         v2 = _v2;
     }
+    public override bool Equals(object ob)
+    {
+        if(ob is StringPair) 
+        {
+            StringPair x = (StringPair) ob;
+            if(v1 == x.v1)
+                return true;
+            else
+                return false;
+        }
+        else {
+            return false;
+        }
+    }
+    public override int GetHashCode()
+    {
+        return v1.GetHashCode();
+    }
 }
 
 public class SurveyManager : MonoBehaviour
@@ -97,7 +115,7 @@ public class SurveyManager : MonoBehaviour
     
     public void BackButton()
     {
-        //ReturnPrevPanel();
+        ReturnPrevPanel();
     }
     
     void InitSurveyState()
@@ -183,6 +201,20 @@ public class SurveyManager : MonoBehaviour
         }    
     }
     
+    void AddRecord(StringPair x)
+    {
+        for(int i = 0; i < saved_results.Count; i++)
+        {
+            if(saved_results[i].v1 == x.v1)
+            {
+                saved_results[i] = x;
+                return;
+            }
+        }
+        
+        saved_results.Add(x);
+    }
+    
     public void OnQuestionBeforeSwitch()
     {
         switch(current_panel)
@@ -190,72 +222,73 @@ public class SurveyManager : MonoBehaviour
             case 0:
             {
                 SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
-                saved_results.Add(new StringPair("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания)", "title"));
+                AddRecord(new StringPair("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания)", "title"));
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                
+                AddRecord(question_record);
                 break;
             }
             case 1:
             {
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 2:
             {
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 3:
             {
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 4:
             {
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 5:
             {
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 6:
             {
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 7:
             {
                 SetPanelName("Состав воды в рабочем растворе при опрыскивании урожая:");
-                saved_results.Add(new StringPair("Состав воды в рабочем растворе при опрыскивании урожая", "title"));
+                AddRecord(new StringPair("Состав воды в рабочем растворе при опрыскивании урожая", "title"));
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 8:
             {
                 SetPanelName("Климатические особенности:");
                 
-                saved_results.Add(new StringPair("Климатические особенности", "title"));
+                AddRecord(new StringPair("Климатические особенности", "title"));
                 
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 9:
             {
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 10:
@@ -264,7 +297,7 @@ public class SurveyManager : MonoBehaviour
                 saved_results.Add(new StringPair("Семенной материал", "title"));
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 11:
@@ -273,58 +306,58 @@ public class SurveyManager : MonoBehaviour
                 saved_results.Add(new StringPair("Генные и сортовые особенности реакции на минеральное питание", "title"));
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 12:
             {
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 13:
             {
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 14:
             {
                 SetPanelName("Минеральное питание:");
-                saved_results.Add(new StringPair("Минеральное питание", "title"));
+                AddRecord(new StringPair("Минеральное питание", "title"));
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 15:
             {
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 16:
             {
                 SetPanelName("Болезни культуры и сорность полей:");
-                saved_results.Add(new StringPair("Болезни культуры и сорность полей", "title"));
+                AddRecord(new StringPair("Болезни культуры и сорность полей", "title"));
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 17:
             {
                 SetPanelName("Исторические данные:");
-                saved_results.Add(new StringPair("Исторические данные", "title"));
+                AddRecord(new StringPair("Исторические данные", "title"));
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 18:
             {
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                saved_results.Add(question_record);
+                AddRecord(question_record);
                 break;
             }
             case 19:
