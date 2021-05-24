@@ -64,6 +64,7 @@
      <Compile Include="Assets\Scripts\DisableOnStart.cs" />
      <Compile Include="Assets\Scripts\Exporter.cs" />
      <Compile Include="Assets\Scripts\GridLayoutResizer.cs" />
+     <Compile Include="Assets\Scripts\HTMLMaker.cs" />
      <Compile Include="Assets\Scripts\Label_calculated.cs" />
      <Compile Include="Assets\Scripts\MessageLabel.cs" />
      <Compile Include="Assets\Scripts\PanelResizer.cs" />
@@ -75,6 +76,8 @@
      <Compile Include="Assets\Scripts\StandardChangerBlock.cs" />
      <Compile Include="Assets\Scripts\StandardsChanger.cs" />
      <Compile Include="Assets\Scripts\StartUpEffect.cs" />
+     <Compile Include="Assets\Scripts\SurveyManager.cs" />
+     <Compile Include="Assets\Scripts\SurveyPanel.cs" />
      <Compile Include="Assets\Scripts\UI_Manager.cs" />
      <Compile Include="Assets\Scripts\VerticalLayoutCustom.cs" />
      <Compile Include="Assets\Scripts\WebManager.cs" />
