@@ -102,7 +102,7 @@ public class UI_Manager : MonoBehaviour
         {
             screenWidth = Screen.width;
             maxSpeed = 1080 / timeToAnimate;
-            print("Resolution changed !");
+            //print("Resolution changed !");
         }
         // label1.text = "Screen (" + Screen.width + ", " + Screen.height + ")";
 

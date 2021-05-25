@@ -14,6 +14,37 @@ public static class SaveSystem
     //     Debug.Log(string.Format("<color=yellow>Saving file path is {0}</color>", full_path));
     // }
     
+    public static void SaveHTML_IOS_Android(string html_as_string, string _fileName)
+    {
+        string fileName = "Агриферт_" + _fileName;
+        
+        string day = System.DateTime.Now.ToString("dd/MM/yy");
+        fileName += "_" + day + ".html";
+
+        string filePath = Path.Combine(Application.temporaryCachePath, fileName);
+        
+        File.WriteAllText(filePath, html_as_string);
+        NativeFilePicker.Permission permission = NativeFilePicker.ExportFile(filePath, (success) => Debug.Log("File exported: " + success));
+        
+
+        Debug.Log("Permission result: " + permission);
+    }
+    
+    // public static NativeFilePicker.FilesExportedCallback OnSaveCallback(bool success)
+    // {
+        
+    // }
+    
+    // public static void OnSaveFailed()
+    // {
+        
+    // }
+    
+    // public static void OnSaveSuccess()
+    // {
+        
+    // }
+    
     public static void SaveHTML_Survey(string html_as_string, string survey_name)
     {
         string savePath = Application.persistentDataPath;

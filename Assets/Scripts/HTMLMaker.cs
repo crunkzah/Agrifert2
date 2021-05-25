@@ -30,13 +30,43 @@ public class HTMLMaker //: MonoBehaviour
         return sb.ToString();
     }
     
-    static string MakeTable_FromCalculator(string calculator_table_name, ref List<StringTriplet> raw)
+    static string MakeTable_FromCalculator_SoilInfo(string calculator_table_name, ref List<StringPair> raw)
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.AppendLine("<p align=\"center\"  style=\"color:green;font-size:40px;\"><b>Агриферт</b></p>");
+        sb.AppendLine(string.Format("<p align=\"center\"  style=\"color:green;font-size:30px;\"><b>Расчет продукции для культуры \"{0}\"</b></p>", calculator_table_name));
+        sb.AppendLine("<table bgcolor=\"#f4ffc2\" width=\"16%\" border=\"2\" bordercolor=\"#0d4a18\" align=\"center\" cellpadding=\"7\">");
+    
+        
+        foreach(StringPair entry in raw)
+        {
+            string cell1 = entry.v1;
+            string cell2 = entry.v2;
+            if(entry.v2.StartsWith("-"))
+            {
+                sb.AppendLine(string.Format("<tr bgcolor=\"#e0e0e0\"> <td align=\"center\">{0}</td> <td align=\"center\">{1}</td> </tr>", cell1, cell2));
+            }
+            else
+            {
+                sb.AppendLine(string.Format("<tr> <td align=\"center\">{0}</td> <td align=\"center\">{1}</td> </tr>", cell1, cell2));
+            }
+         
+        }
+        
+        sb.AppendLine("</table>");
+       
+        
+        return sb.ToString();
+    }
+    
+    static string MakeTable_FromCalculator(ref List<StringTriplet> raw)
     {
         StringBuilder sb = new StringBuilder();
         //string.Format("Расчет продукции для культуры \"{0}\"", calculator_table_name); 
-        sb.AppendLine("<p align=\"center\"  style=\"color:green;font-size:36px;\"><b>Агриферт</b></p>");
-        sb.AppendLine(string.Format("<p align=\"center\"  style=\"color:green;font-size:30px;\"><b>Расчет продукции для культуры \"{0}\"</b></p>", calculator_table_name));
-        sb.AppendLine("<table bgcolor=\"#f4ffc2\" width=\"50%\" border=\"2\" bordercolor=\"#0d4a18\" align=\"center\" cellpadding=\"10\">");
+        //sb.AppendLine("<p align=\"center\"  style=\"color:green;font-size:36px;\"><b>Агриферт</b></p>");
+        sb.AppendLine("<p align=\"center\"  style=\"color:green;font-size:30px;\"><b>Результаты:</b></p>");
+        sb.AppendLine("<table bgcolor=\"#f4ffc2\" width=\"45%\" border=\"2\" bordercolor=\"#0d4a18\" align=\"center\" cellpadding=\"10\">");
         sb.AppendLine("<tr>");
         sb.AppendLine("<th>Продукт</th>");
         sb.AppendLine("<th>Объем</th>");
@@ -106,15 +136,16 @@ public class HTMLMaker //: MonoBehaviour
         return sb.ToString();
     }
     
-    public static string MakeHTMLPage_FromCalculator(string calculator_page_name, ref List<StringTriplet> calculator_results)
+    public static string MakeHTMLPage_FromCalculator(string calculator_page_name, ref List<StringTriplet> calculator_results, ref List<StringPair> soilInfo)
     {
         string Result = string.Empty;
         
         string head = PageHead_Calculator();
-        string content = MakeTable_FromCalculator(calculator_page_name, ref calculator_results);
+        string soil_info = MakeTable_FromCalculator_SoilInfo(calculator_page_name, ref soilInfo);
+        string content = MakeTable_FromCalculator(ref calculator_results);
         string end = PageEnd();
         
-        Result = head + content + end;
+        Result = head + soil_info + content + end;
         
         return Result;
     }
