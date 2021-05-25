@@ -101,18 +101,19 @@ public class Calculator : MonoBehaviour
                 string calculator_html_FileName = "Расчеты_" + export_name;
                 string cultureNamePretty = CultureItemReader.GetCultureNamePretty(current_culture);
                 string html_as_string = HTMLMaker.MakeHTMLPage_FromCalculator(cultureNamePretty, ref export_triplets, ref export_soilInfo);
-                SaveSystem.SaveHTML_Calculator(html_as_string, calculator_html_FileName);
+        
+                SaveSystem.SaveHTML_IOS_Android(html_as_string, calculator_html_FileName);
                 
-#if UNITY_ANDROID || UNITY_IOS
-        SaveSystem.SaveHTML_IOS_Android(html_as_string, calculator_html_FileName);
-#else
-        SaveSystem.SaveHTML_Calculator(html_as_string, calculator_html_FileName);
-#endif
+// #if UNITY_ANDROID || UNITY_IOS
+//         SaveSystem.SaveHTML_IOS_Android(html_as_string, calculator_html_FileName);
+// #else
+//         SaveSystem.SaveHTML_Calculator(html_as_string, calculator_html_FileName);
+// #endif
             // UI_Manager.ShowMessage("Выгрузка <color=#19d40f>произошла</color>.");
         }
         else
         {
-            // UI_Manager.ShowMessage("Выгрузка <color=#d4360f>не удалась</color>...");
+            UI_Manager.ShowMessage("Выгрузка <color=#d4360f>не удалась</color>...");
         }
     }
     

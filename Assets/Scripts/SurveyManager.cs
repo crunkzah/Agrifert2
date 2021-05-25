@@ -93,11 +93,13 @@ public class SurveyManager : MonoBehaviour
     {
         string survey_name = "Отчет_опросника";
         string html_as_string = HTMLMaker.MakeHTMLPage_FromSurvey(ref saved_results);
-    #if UNITY_ANDROID || UNITY_IOS
         SaveSystem.SaveHTML_IOS_Android(html_as_string, survey_name);
-    #else
-        SaveSystem.SaveHTML_Survey(html_as_string, survey_name);
-    #endif
+        
+    // #if UNITY_ANDROID || UNITY_IOS
+    //     SaveSystem.SaveHTML_IOS_Android(html_as_string, survey_name);
+    // #else
+    //     SaveSystem.SaveHTML_Survey(html_as_string, survey_name);
+    // #endif
         // UI_Manager.ShowMessage("Отчет сохранен!");
     }
     
