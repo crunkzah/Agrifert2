@@ -18,12 +18,17 @@ public static class SaveSystem
     {
         string fileName = "Агриферт_" + _fileName;
         
-        string day = System.DateTime.Now.ToString("dd/MM/yy");
-        fileName += "_" + day + ".html";
+        // string day = System.DateTime.Now.ToString("dd/MM/yy");
+        System.DateTime dateTime = System.DateTime.Now;
+        
+        fileName += "_" + dateTime.Day.ToString() + "_" + dateTime.Month.ToString() + "_" + dateTime.Year.ToString() + ".html";
+        
+        //fileName += "_" + day + ".html";
+        //fileName += "_" + day + ".html";
 
         string filePath = Path.Combine(Application.temporaryCachePath, fileName);
-        
         File.WriteAllText(filePath, html_as_string);
+        
         NativeFilePicker.Permission permission = NativeFilePicker.ExportFile(filePath, (success) => Debug.Log("File exported: " + success));
         
 
