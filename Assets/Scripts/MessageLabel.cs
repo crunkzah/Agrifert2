@@ -18,12 +18,6 @@ public class MessageLabel : MonoBehaviour
         tmp = GetComponentInChildren<TextMeshProUGUI>();
     }
     
-    void Start()
-    {
-        img.color = SetAlpha(img.color, 0);
-        tmp.color = SetAlpha(tmp.color, 0);
-    }
-    
     Color SetAlpha(Color col, float alpha)
     {
         Color Result = col;

@@ -6,6 +6,20 @@ using System.Globalization;
 using TMPro;
 
 
+[System.Serializable]
+public struct StringTriplet
+{
+    public string v1;
+    public string v2;
+    public string v3;
+    
+    public StringTriplet(string _v1, string _v2, string _v3)
+    {
+        v1 = _v1;
+        v2 = _v2;
+        v3 = _v3;
+    }
+}
 
 //0-3 Озимая пшеница
 //4-6 Соя
@@ -68,12 +82,29 @@ public class Calculator : MonoBehaviour
     public GameObject debugItem;
     public GameObject debugLabel;
     
+    public List<StringTriplet> export_triplets = new List<StringTriplet>();
+    
+    void AddToExport(StringTriplet x)
+    {
+        export_triplets.Add(x);
+    }
+    
     public void MakeExportCurrentResult()
     {
         if(canExport)
         {
             string export_name = CultureItemReader.GetCultureName(current_culture);
-            SaveSystem.SaveTxt(export_buffer, export_name);
+            
+            // if(current_culture == Culture.Ozimaya_pshenica || current_culture == Culture.Soy)
+            // {
+                string calculator_html_FileName = "Расчеты_" + export_name;
+                string html_as_string = HTMLMaker.MakeHTMLPage_FromCalculator(CultureItemReader.GetCultureNamePretty(current_culture), ref export_triplets);
+                SaveSystem.SaveHTML_Calculator(html_as_string, calculator_html_FileName);
+            // }
+            // else
+            // {
+            //     SaveSystem.SaveTxt(export_buffer, export_name);
+            // }
             UI_Manager.ShowMessage("Выгрузка <color=#19d40f>произошла</color>.");
         }
         else
@@ -279,6 +310,7 @@ public class Calculator : MonoBehaviour
             case Culture.None:
             {
                 export_buffer.Clear();
+                export_triplets.Clear();
                 ClearResults();
                 canExport = false;
                 
@@ -289,8 +321,10 @@ public class Calculator : MonoBehaviour
             case Culture.Ozimaya_pshenica:
             {
                 export_buffer.Clear();
+                export_triplets.Clear();
                 export_buffer.AppendLine("Расчет продукции для культуры \"Озимая пшеница\": ");
-                export_buffer.AppendLine("");
+                //AddToExport(new StringTriplet("Расчет продукции для культуры \"Озимая пшеница\"", "title_1", ""));
+                //export_buffer.AppendLine("");
                 
                 ReadInput();
                 Result_Ozimaya_pshenica();
@@ -303,6 +337,7 @@ public class Calculator : MonoBehaviour
             case Culture.Soy:
             {
                 export_buffer.Clear();
+                export_triplets.Clear();
                 export_buffer.AppendLine("Расчет продукции для культуры \"Соя\": ");
                 export_buffer.AppendLine("");
                 
@@ -316,6 +351,7 @@ public class Calculator : MonoBehaviour
             case Culture.Raps:
             {
                 export_buffer.Clear();
+                export_triplets.Clear();
                 export_buffer.AppendLine("Расчет продукции для культуры \"Рапс\": ");
                 export_buffer.AppendLine("");
                 
@@ -329,6 +365,7 @@ public class Calculator : MonoBehaviour
             case Culture.Kartofel:
             {
                 export_buffer.Clear();
+                export_triplets.Clear();
                 export_buffer.AppendLine("Расчет продукции для культуры \"Картофель\": ");
                 export_buffer.AppendLine("");
                 
@@ -342,6 +379,7 @@ public class Calculator : MonoBehaviour
             case Culture.Kukuruza:
             {
                 export_buffer.Clear();
+                export_triplets.Clear();
                 export_buffer.AppendLine("Расчет продукции для культуры \"Кукуруза\": ");
                 export_buffer.AppendLine("");
                 
@@ -355,6 +393,7 @@ public class Calculator : MonoBehaviour
             case Culture.Podsolnechnik:
             {
                 export_buffer.Clear();
+                export_triplets.Clear();
                 export_buffer.AppendLine("Расчет продукции для культуры \"Подсолнечник\": ");
                 export_buffer.AppendLine("");
                 
@@ -368,6 +407,7 @@ public class Calculator : MonoBehaviour
             case Culture.Xlopchatnik:
             {
                 export_buffer.Clear();
+                export_triplets.Clear();
                 export_buffer.AppendLine("Расчет продукции для культуры \"Хлопчатник\": ");
                 export_buffer.AppendLine("");
                 
@@ -381,6 +421,7 @@ public class Calculator : MonoBehaviour
             case Culture.Svekla:
             {
                 export_buffer.Clear();
+                export_triplets.Clear();
                 export_buffer.AppendLine("Расчет продукции для культуры \"Сахарная свёкла\": ");
                 export_buffer.AppendLine("");
                 
@@ -423,104 +464,122 @@ public class Calculator : MonoBehaviour
         {
             string txt = "Фазы для обработок (рекомендации): между фазой 4-6 настоящих листьев 20 дней до уборки:";
             MakeLabel(txt, ref current_y, ref delta_height);
+            
+            AddToExport(new StringTriplet(txt, "title_1", ""));
         }
-        double sum2 = 0;
+        float sum2 = 0;
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
             ci = item.GetComponent<CalculatedItem>();
             //    
-            double veg_melafen_v = current_area * standards[35].vegetation;
-            double veg_melafen_price = veg_melafen_v * standards[35].price;
+            float veg_melafen_v = current_area * standards[35].vegetation;
+            float veg_melafen_price = veg_melafen_v * standards[35].price;
             
             //
             ci.label1.SetText("Обработка по вегетации регулятором роста растений <b><color=#41AB4A>Мелафен</color> (2 обработки по 15 мл)</b>:");
             ci.volume.SetText(FormatLitres(veg_melafen_v));
             ci.price.SetText(FormatPrice(veg_melafen_price));
             
-            sum2 += veg_melafen_price;
-            
             export_buffer.AppendLine("Мелафен (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_melafen_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_melafen_price));
+            
+            StringTriplet st = new StringTriplet("Мелафен (вегетация)", FormatForExport_Litres(veg_melafen_v), FormatForExport_Price(veg_melafen_price));
+            AddToExport(st);
+            
+            sum2 += veg_melafen_price;
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
             ci = item.GetComponent<CalculatedItem>();
             //    
-            double veg_universal_v = current_area * standards[36].vegetation;
-            double veg_universal_price = veg_universal_v * standards[36].price;
+            float veg_universal_v = current_area * standards[36].vegetation;
+            float veg_universal_price = veg_universal_v * standards[36].price;
             
             //
             ci.label1.SetText("Обработка по вегетации комплексным удобрением <color=#41AB4A><b>Универсал</b></color>:");
             ci.volume.SetText(FormatLitres(veg_universal_v));
             ci.price.SetText(FormatPrice(veg_universal_price));
             
-            sum2 += veg_universal_price;
-            
             export_buffer.AppendLine("Универсал (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_universal_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_universal_price));
+            
+            StringTriplet st = new StringTriplet("Универсал (вегетация)", FormatForExport_Litres(veg_universal_v), FormatForExport_Price(veg_universal_price));
+            AddToExport(st);
+            
+            sum2 += veg_universal_price;
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
             ci = item.GetComponent<CalculatedItem>();
             //    
-            double veg_bor_v = current_area * standards[37].vegetation;
-            double veg_bor_price = veg_bor_v * standards[37].price;
+            float veg_bor_v = current_area * standards[37].vegetation;
+            float veg_bor_price = veg_bor_v * standards[37].price;
             
             //
             ci.label1.SetText("Обработка по вегетации комплексным удобрением <color=#41AB4A><b>Бор и Молибден</b></color>:");
             ci.volume.SetText(FormatLitres(veg_bor_v));
             ci.price.SetText(FormatPrice(veg_bor_price));
             
-            sum2 += veg_bor_price;
-            
             export_buffer.AppendLine("Бор и Молибден (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_bor_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_bor_price));
+            
+            StringTriplet st = new StringTriplet("Бор и Молибден (вегетация)", FormatForExport_Litres(veg_bor_v), FormatForExport_Price(veg_bor_price));
+            AddToExport(st);
+            
+            sum2 += veg_bor_price;
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
             ci = item.GetComponent<CalculatedItem>();
             //    
-            double veg_med_v = current_area * standards[39].vegetation;
-            double veg_med_price = veg_med_v * standards[39].price;
+            float veg_med_v = current_area * standards[39].vegetation;
+            float veg_med_price = veg_med_v * standards[39].price;
             
             //
             ci.label1.SetText("Обработка по вегетации удобрением <color=#41AB4A><b>Медь</b></color>:");
             ci.volume.SetText(FormatLitres(veg_med_v));
             ci.price.SetText(FormatPrice(veg_med_price));
             
-            sum2 += veg_med_price;
-            
             export_buffer.AppendLine("Медь (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_med_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_med_price));
+            
+            StringTriplet st = new StringTriplet("Медь (вегетация)", FormatForExport_Litres(veg_med_v), FormatForExport_Price(veg_med_price));
+            AddToExport(st);
+            
+            sum2 += veg_med_price;
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
             ci = item.GetComponent<CalculatedItem>();
             //    
-            double veg_marganec_v = current_area * standards[38].vegetation;
-            double veg_marganec_price = veg_marganec_v * standards[38].price;
+            float veg_marganec_v = current_area * standards[38].vegetation;
+            float veg_marganec_price = veg_marganec_v * standards[38].price;
             
             //
             ci.label1.SetText("Обработка по вегетации удобрением <color=#41AB4A><b>Марганец</b></color>:");
             ci.volume.SetText(FormatLitres(veg_marganec_v));
             ci.price.SetText(FormatPrice(veg_marganec_price));
             
-            sum2 += veg_marganec_price;
-            
             export_buffer.AppendLine("Марганец (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_marganec_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_marganec_price));
+            
+            StringTriplet st = new StringTriplet("Марганец (вегетация)", FormatForExport_Litres(veg_marganec_v), FormatForExport_Price(veg_marganec_price));
+            AddToExport(st);
+            
+            sum2 += veg_marganec_price;
         }
         {
             string txt = "Итого: " + FormatPrice(sum2);
             GameObject sum_label = MakeLabel(txt, ref current_y, ref delta_height);
             sum_label.GetComponent<Image>().color = new Color(188f/255f, 217f/255f, 67f/255f);
             
-            export_buffer.AppendLine("Итого: " + FormatForExport(sum2));
+            export_buffer.AppendLine("Итого (вегетация): " + FormatForExport(sum2));
+            AddToExport(new StringTriplet("Итого (вегетация):", "sum_price", FormatForExport_Price(sum2)));
         }
         
         FitContentSize(delta_height);
@@ -543,6 +602,7 @@ public class Calculator : MonoBehaviour
             MakeLabel(txt, ref current_y, ref delta_height);
             
             export_buffer.AppendLine(txt);
+            AddToExport(new StringTriplet("Обработка семян:", "title_1", ""));
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -561,6 +621,9 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine("Мелафен:");
             export_buffer.AppendLine(FormatForExport_Litres(seed_melafen_v));
             export_buffer.AppendLine(FormatForExport_Price(seed_melafen_price));
+            
+            StringTriplet st = new StringTriplet("Мелафен", FormatForExport_Litres(seed_melafen_v), FormatForExport_Price(seed_melafen_price));
+            AddToExport(st);
         }
         {
             string txt = "Итого: " + FormatPrice(sum1);
@@ -568,12 +631,15 @@ public class Calculator : MonoBehaviour
             sum_label.GetComponent<Image>().color = new Color(188f/255f, 217f/255f, 67f/255f);
             
             export_buffer.AppendLine("Итого:" + FormatForExport_Price(sum1));
+            
+            AddToExport(new StringTriplet("Итого: ", "sum_price", FormatForExport_Price(sum1)));
         }
         {
             string txt = "Фазы для обработок (рекомендации): бутонизация или начало формирования коробочки:";
             MakeLabel(txt, ref current_y, ref delta_height);
             
             export_buffer.AppendLine(txt);
+            AddToExport(new StringTriplet(txt, "title_1", ""));
         }
         float sum2 = 0;
         {
@@ -592,6 +658,9 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine(FormatForExport_Litres(veg_melafen_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_melafen_price));
             
+            StringTriplet st = new StringTriplet("Мелафен (вегетация)", FormatForExport_Litres(veg_melafen_v), FormatForExport_Price(veg_melafen_price));
+            AddToExport(st);
+            
             sum2 += veg_melafen_price;
         }
         {
@@ -606,18 +675,22 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(veg_universal_v));
             ci.price.SetText(FormatPrice(veg_universal_price));
             
-            sum2 += veg_universal_price;
-            
             export_buffer.AppendLine("Универсал (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_universal_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_universal_price));
+            
+            StringTriplet st = new StringTriplet("Универсал (вегетация)", FormatForExport_Litres(veg_universal_v), FormatForExport_Price(veg_universal_price));
+            AddToExport(st);
+            
+            sum2 += veg_universal_price;
         }
         {
             string txt = "Итого: " + FormatPrice(sum2);
             GameObject sum_label = MakeLabel(txt, ref current_y, ref delta_height);
             sum_label.GetComponent<Image>().color = new Color(188f/255f, 217f/255f, 67f/255f);
             
-            export_buffer.AppendLine("Итого: " + FormatForExport_Price(sum2));
+            export_buffer.AppendLine("Итого (вегетация): " + FormatForExport_Price(sum2));
+            AddToExport(new StringTriplet("Итого (вегетация):", "sum_price", FormatForExport_Price(sum2)));
         }
         FitContentSize(delta_height);
     }
@@ -732,6 +805,7 @@ public class Calculator : MonoBehaviour
             MakeLabel(txt, ref current_y, ref delta_height);
             
             export_buffer.AppendLine(txt);
+            AddToExport(new StringTriplet("Обработка семян:", "title_1", ""));
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -750,6 +824,9 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine("Мелафен:");
             export_buffer.AppendLine(FormatForExport_Litres(seed_melafen_v));
             export_buffer.AppendLine(FormatForExport_Price(seed_melafen_price));
+            
+            StringTriplet st = new StringTriplet("Мелафен", FormatForExport_Litres(seed_melafen_v), FormatForExport_Price(seed_melafen_price));
+            AddToExport(st);
         }
         {
             string txt = "Итого: " + FormatPrice(sum1);
@@ -757,6 +834,7 @@ public class Calculator : MonoBehaviour
             sum_label.GetComponent<Image>().color = new Color(188f/255f, 217f/255f, 67f/255f);
             
             export_buffer.AppendLine("Итого: " + FormatForExport_Price(sum1));
+            AddToExport(new StringTriplet("Итого: ", "sum_price", FormatForExport_Price(sum1)));
         }
         /*{
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -776,6 +854,8 @@ public class Calculator : MonoBehaviour
             string txt = "Фазы для обработок (рекомендации): между фазой 6-7 листьев и фазой выбрасывания метелки:";
             MakeLabel(txt, ref current_y, ref delta_height);
             export_buffer.AppendLine(txt);
+            
+            AddToExport(new StringTriplet("Фазы для обработок (рекомендации): между фазой 6-7 листьев и фазой выбрасывания метелки", "title_1", ""));
         }
         float sum2 = 0;
         {
@@ -795,6 +875,9 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine("Универсал (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_universal_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_universal_price));
+            
+            StringTriplet st = new StringTriplet("Универсал (вегетация)", FormatForExport_Litres(veg_universal_v), FormatForExport_Price(veg_universal_price));
+            AddToExport(st);
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -813,6 +896,9 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine("Цинк (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_zink_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_zink_price));
+            
+            StringTriplet st = new StringTriplet("Цинк (вегетация)", FormatForExport_Litres(veg_zink_v), FormatForExport_Price(veg_zink_price));
+            AddToExport(st);
         }
         {
             string txt = "Итого: " + FormatPrice(sum2);
@@ -820,6 +906,7 @@ public class Calculator : MonoBehaviour
             sum_label.GetComponent<Image>().color = new Color(188f/255f, 217f/255f, 67f/255f);
             
             export_buffer.AppendLine("Итого: " + FormatForExport_Price(sum2));
+            AddToExport(new StringTriplet("Итого (вегетация):", "sum_price", FormatForExport_Price(sum2)));
         }
         
         FitContentSize(delta_height);
@@ -840,6 +927,7 @@ public class Calculator : MonoBehaviour
         {
             string txt = "Обработка семян: ";
             MakeLabel(txt, ref current_y, ref delta_height);
+            AddToExport(new StringTriplet("Обработка семян:", "title_1", ""));
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -858,6 +946,9 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine("Мелафен:");
             export_buffer.AppendLine(FormatForExport_Litres(seed_melafen_v));
             export_buffer.AppendLine(FormatForExport_Price(seed_melafen_price));
+            
+            StringTriplet st = new StringTriplet("Мелафен", FormatForExport_Litres(seed_melafen_v), FormatForExport_Price(seed_melafen_price));
+            AddToExport(st);
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -871,11 +962,14 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(seed_universal_v));
             ci.price.SetText(FormatPrice(seed_universal_price));
             
-            sum1 += seed_universal_price;
-            
             export_buffer.AppendLine("Универсал:");
             export_buffer.AppendLine(FormatForExport_Litres(seed_universal_v));
             export_buffer.AppendLine(FormatForExport_Price(seed_universal_price));
+            
+            StringTriplet st = new StringTriplet("Универсал", FormatForExport_Litres(seed_universal_v), FormatForExport_Price(seed_universal_price));
+            AddToExport(st);
+            
+            sum1 += seed_universal_price;
         }
         {
             string txt = "Итого: " + FormatPrice(sum1);
@@ -883,11 +977,13 @@ public class Calculator : MonoBehaviour
             sum_label.GetComponent<Image>().color = new Color(188f/255f, 217f/255f, 67f/255f);
             
             export_buffer.AppendLine("Итого: " + FormatForExport_Price(sum1));
+            AddToExport(new StringTriplet("Итого: ", "sum_price", FormatForExport_Price(sum1)));
         }
         {
             string txt = "Фазы для обработок (рекомендации): между фазой высоты всходов 15 см. до окончания цветения:";
             MakeLabel(txt, ref current_y, ref delta_height);
             export_buffer.AppendLine(txt);
+            AddToExport(new StringTriplet(txt, "title_1", ""));
         }
         float sum2 = 0;
         {
@@ -902,11 +998,14 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(veg_melafen_v));
             ci.price.SetText(FormatPrice(veg_melafen_price));
             
-            sum2 += veg_melafen_price;
-            
             export_buffer.AppendLine("Мелафен (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_melafen_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_melafen_price));
+            
+            StringTriplet st = new StringTriplet("Мелафен (вегетация)", FormatForExport_Litres(veg_melafen_v), FormatForExport_Price(veg_melafen_price));
+            AddToExport(st);
+            
+            sum2 += veg_melafen_price;
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -920,11 +1019,14 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(veg_universal_v));
             ci.price.SetText(FormatPrice(veg_universal_price));
             
-            sum2 += veg_universal_price;
-            
             export_buffer.AppendLine("Универсал (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_universal_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_universal_price));
+            
+            StringTriplet st = new StringTriplet("Универсал (вегетация)", FormatForExport_Litres(veg_universal_v), FormatForExport_Price(veg_universal_price));
+            AddToExport(st);
+            
+            sum2 += veg_universal_price;
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -938,11 +1040,14 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(veg_bor_v));
             ci.price.SetText(FormatPrice(veg_bor_price));
             
-            sum2 += veg_bor_price;
-            
             export_buffer.AppendLine("Бор и Молибден (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_bor_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_bor_price));
+            
+            StringTriplet st = new StringTriplet("Бор и Молибден (вегетация)", FormatForExport_Litres(veg_bor_v), FormatForExport_Price(veg_bor_price));
+            AddToExport(st);
+            
+            sum2 += veg_bor_price;
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -956,11 +1061,14 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(veg_med_v));
             ci.price.SetText(FormatPrice(veg_med_price));
             
-            sum2 += veg_med_price;
-            
             export_buffer.AppendLine("Медь (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_med_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_med_price));
+            
+            StringTriplet st = new StringTriplet("Медь (вегетация)", FormatForExport_Litres(veg_med_v), FormatForExport_Price(veg_med_price));
+            AddToExport(st);
+            
+            sum2 += veg_med_price;
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -979,6 +1087,9 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine("Цинк (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_zink_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_zink_price));
+            
+            StringTriplet st = new StringTriplet("Цинк (вегетация)", FormatForExport_Litres(veg_zink_v), FormatForExport_Price(veg_zink_price));
+            AddToExport(st);
         }
         /*{
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -999,7 +1110,8 @@ public class Calculator : MonoBehaviour
             GameObject sum_label = MakeLabel(txt, ref current_y, ref delta_height);
             sum_label.GetComponent<Image>().color = new Color(188f/255f, 217f/255f, 67f/255f);
             
-            export_buffer.AppendLine("Итого: " + FormatForExport_Price(sum2));
+            export_buffer.AppendLine("Итого (вегетация): " + FormatForExport_Price(sum2));
+            AddToExport(new StringTriplet("Итого (вегетация):", "sum_price", FormatForExport_Price(sum2)));
         }
         
         FitContentSize(delta_height);
@@ -1022,6 +1134,8 @@ public class Calculator : MonoBehaviour
             string txt = "Обработка семян: ";
             export_buffer.AppendLine(txt);
             MakeLabel(txt, ref current_y, ref delta_height);
+            
+            AddToExport(new StringTriplet("Обработка семян:", "title_1", ""));
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -1035,11 +1149,14 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(seed_melafen_v));
             ci.price.SetText(FormatPrice(seed_melafen_price));
             
-            sum1 += seed_melafen_price;
-            
             export_buffer.AppendLine("Мелафен:");
             export_buffer.AppendLine(FormatForExport_Litres(seed_melafen_v));
             export_buffer.AppendLine(FormatForExport_Price(seed_melafen_price));
+            
+            StringTriplet st = new StringTriplet("Мелафен", FormatForExport_Litres(seed_melafen_v), FormatForExport_Price(seed_melafen_price));
+            AddToExport(st);
+            
+            sum1 += seed_melafen_price;
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -1053,11 +1170,15 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(seed_universal_v));
             ci.price.SetText(FormatPrice(seed_universal_price));
             
-            sum1 += seed_universal_price;
             
             export_buffer.AppendLine("Универсал:");
             export_buffer.AppendLine(FormatForExport_Litres(seed_universal_v));
             export_buffer.AppendLine(FormatForExport_Price(seed_universal_price));
+            
+            StringTriplet st = new StringTriplet("Универсал", FormatForExport_Litres(seed_universal_v), FormatForExport_Price(seed_universal_price));
+            AddToExport(st);
+            
+            sum1 += seed_universal_price;
         }
         {
             string txt = "Итого: " + FormatPrice(sum1);
@@ -1065,11 +1186,14 @@ public class Calculator : MonoBehaviour
             sum_label.GetComponent<Image>().color = new Color(188f/255f, 217f/255f, 67f/255f);
             
             export_buffer.AppendLine("Итого: " + FormatForExport_Price(sum1));
+            AddToExport(new StringTriplet("Итого: ", "sum_price", FormatForExport_Price(sum1)));
         }
         {
             string txt = "Фазы для обработок (рекомендации): между фазой формирования листовой розетки до развития стручков:";
             MakeLabel(txt, ref current_y, ref delta_height);
             export_buffer.AppendLine(txt);
+            
+            AddToExport(new StringTriplet(txt, "title_1", ""));
         }
         float sum2 = 0;
         {
@@ -1084,11 +1208,14 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(veg_melafen_v));
             ci.price.SetText(FormatPrice(veg_melafen_price));
             
-            sum2 += veg_melafen_price;
-            
             export_buffer.AppendLine("Мелафен (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_melafen_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_melafen_price));
+            
+            StringTriplet st = new StringTriplet("Мелафен (вегетация)", FormatForExport_Litres(veg_melafen_v), FormatForExport_Price(veg_melafen_price));
+            AddToExport(st);
+            
+            sum2 += veg_melafen_price;
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -1102,11 +1229,14 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(veg_universal_v));
             ci.price.SetText(FormatPrice(veg_universal_price));
             
-            sum2 += veg_universal_price;
-            
             export_buffer.AppendLine("Универсал (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_universal_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_universal_price));
+            
+            StringTriplet st = new StringTriplet("Универсал (вегетация)", FormatForExport_Litres(veg_universal_v), FormatForExport_Price(veg_universal_price));
+            AddToExport(st);
+            
+            sum2 += veg_universal_price;
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -1120,11 +1250,14 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(veg_bor_v));
             ci.price.SetText(FormatPrice(veg_bor_price));
             
-            sum2 += veg_bor_price;
-            
             export_buffer.AppendLine("Бор и Молибден (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_bor_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_bor_price));
+            
+            StringTriplet st = new StringTriplet("Бор и Молибден (вегетация)", FormatForExport_Litres(veg_bor_v), FormatForExport_Price(veg_bor_price));
+            AddToExport(st);
+            
+            sum2 += veg_bor_price;
         }
         {
             string txt = "Итого: " + FormatPrice(sum2);
@@ -1132,6 +1265,7 @@ public class Calculator : MonoBehaviour
             sum_label.GetComponent<Image>().color = new Color(188f/255f, 217f/255f, 67f/255f);
             
             export_buffer.AppendLine("Итого: " + FormatForExport_Price(sum2));
+            AddToExport(new StringTriplet("Итого (вегетация):", "sum_price", FormatForExport_Price(sum2)));
         }
         
         FitContentSize(delta_height);
@@ -1158,7 +1292,9 @@ public class Calculator : MonoBehaviour
         {
             string txt = "Обработка семян: ";
             export_buffer.AppendLine(txt);
+            
             MakeLabel(txt, ref current_y, ref delta_height);
+            AddToExport(new StringTriplet("Обработка семян:", "title_1", ""));
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -1176,6 +1312,9 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine(FormatForExport_Litres(seed_melafen_v));
             export_buffer.AppendLine(FormatForExport_Price(seed_melafen_price));
             
+            StringTriplet st = new StringTriplet("Мелафен", FormatForExport_Litres(seed_melafen_v), FormatForExport_Price(seed_melafen_price));
+            AddToExport(st);
+            
             sum1 += seed_melafen_price;
         }
         {
@@ -1183,11 +1322,15 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine("Итого: " + FormatForExport_Price(sum1));
             GameObject sum_label = MakeLabel(txt, ref current_y, ref delta_height);
             sum_label.GetComponent<Image>().color = new Color(188f/255f, 217f/255f, 67f/255f);
+            
+            AddToExport(new StringTriplet("Итого: ", "sum_price", FormatForExport_Price(sum1)));
         }
         {
             string txt = "Фазы для обработок (рекомендации): между полностью развитые листья 1 узла и начала бобо-образования:";
             export_buffer.AppendLine(txt);
             MakeLabel(txt, ref current_y, ref delta_height);
+            
+            AddToExport(new StringTriplet("Обработки по вегетации, фазы: кущения, выход в трубку, колошения:", "title_1", ""));
         }
         float sum2 = 0;
         {
@@ -1204,6 +1347,9 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine("Мелафен (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_melafen_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_melafen_v));
+            
+            StringTriplet st = new StringTriplet("Мелафен (вегетация)", FormatForExport_Litres(veg_melafen_v), FormatForExport_Price(veg_melafen_price));
+            AddToExport(st);
             
             sum2 += veg_melafen_price;
         }
@@ -1222,6 +1368,9 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine(FormatForExport_Litres(veg_universal_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_universal_price));
             
+            StringTriplet st = new StringTriplet("Универсал (вегетация)", FormatForExport_Litres(veg_universal_v), FormatForExport_Price(veg_universal_price));
+            AddToExport(st);
+            
             sum2 += veg_universal_price;
         }
         {
@@ -1239,6 +1388,9 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine(FormatForExport_Litres(veg_bor_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_bor_price));
             
+            StringTriplet st = new StringTriplet("Бор и Молибден (вегетация)", FormatForExport_Litres(veg_bor_v), FormatForExport_Price(veg_bor_price));
+            AddToExport(st);
+            
             sum2 += veg_bor_price;
         }
         {
@@ -1246,6 +1398,8 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine("Итого (вегетация): " + FormatForExport_Price(sum2));
             GameObject sum_label = MakeLabel(txt, ref current_y, ref delta_height);
             sum_label.GetComponent<Image>().color = new Color(188f/255f, 217f/255f, 67f/255f);
+            
+            AddToExport(new StringTriplet("Итого: ", "sum_price", FormatForExport_Price(sum2)));
         }
         
         FitContentSize(delta_height);
@@ -1299,6 +1453,7 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine(txt);
             
             MakeLabel(txt, ref current_y, ref delta_height);
+            AddToExport(new StringTriplet("Обработка семян:", "title_1", ""));
         }
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
@@ -1312,15 +1467,16 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(seed_melafen_v));
             ci.price.SetText(FormatPrice(seed_melafen_price));
             
+            
             export_buffer.AppendLine("Мелафен:");
             export_buffer.AppendLine(FormatForExport_Litres(seed_melafen_v));
             export_buffer.AppendLine(FormatForExport_Price(seed_melafen_price));
             
+            StringTriplet st = new StringTriplet("Мелафен", FormatForExport_Litres(seed_melafen_v), FormatForExport_Price(seed_melafen_price));
+            AddToExport(st);
+            
             sum1 += seed_melafen_price;
         }
-        
-        
-        
         {
             item = MakeCalculatedItem(ref current_y, ref delta_height);
             ci = item.GetComponent<CalculatedItem>();
@@ -1336,6 +1492,9 @@ public class Calculator : MonoBehaviour
             export_buffer.AppendLine(FormatForExport_Litres(seed_universal_v));
             export_buffer.AppendLine(FormatForExport_Price(seed_universal_price));
             
+            StringTriplet st = new StringTriplet("Универсал", FormatForExport_Litres(seed_universal_v), FormatForExport_Price(seed_universal_price));
+            AddToExport(st);
+            
             sum1 += seed_universal_price;
         }
         export_buffer.AppendLine(System.Environment.NewLine);
@@ -1344,7 +1503,9 @@ public class Calculator : MonoBehaviour
             GameObject sum_label = MakeLabel(txt, ref current_y, ref delta_height);
             sum_label.GetComponent<Image>().color = new Color(188f/255f, 217f/255f, 67f/255f);
             
+            
             export_buffer.AppendLine("Итого: " + FormatForExport_Price(sum1));
+            AddToExport(new StringTriplet("Итого: ", "sum_price", FormatForExport_Price(sum1)));
         }
         export_buffer.AppendLine(System.Environment.NewLine);
         {
@@ -1352,6 +1513,7 @@ public class Calculator : MonoBehaviour
             MakeLabel(txt, ref current_y, ref delta_height);
             
             export_buffer.AppendLine(txt);
+            AddToExport(new StringTriplet("Обработки по вегетации, фазы: кущения, выход в трубку, колошения:", "title_1", ""));
         }
         export_buffer.AppendLine(System.Environment.NewLine);
         float sum2 = 0;
@@ -1366,11 +1528,14 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(veg_melafen_v));
             ci.price.SetText(FormatPrice(veg_melafen_price));
             
-            sum2 += veg_melafen_price;
-            
             export_buffer.AppendLine("Мелафен (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_melafen_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_melafen_price));
+            
+            StringTriplet st = new StringTriplet("Мелафен (вегетация)", FormatForExport_Litres(veg_melafen_v), FormatForExport_Price(veg_melafen_price));
+            AddToExport(st);
+            
+            sum2 += veg_melafen_price;
         }
         export_buffer.AppendLine(System.Environment.NewLine);
         {
@@ -1383,11 +1548,15 @@ public class Calculator : MonoBehaviour
             ci.label1.SetText("Обработка по вегетации комплексным удобрением <color=#41AB4A><b>Универсал</b></color>:");
             ci.volume.SetText(FormatLitres(veg_universal_v));
             ci.price.SetText(FormatPrice(veg_universal_price));
-            sum2 += veg_universal_price;
             
             export_buffer.AppendLine("Универсал (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_universal_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_universal_price));
+            
+            StringTriplet st = new StringTriplet("Универсал (вегетация)", FormatForExport_Litres(veg_universal_v), FormatForExport_Price(veg_universal_price));
+            AddToExport(st);
+            
+            sum2 += veg_universal_price;
         }
         export_buffer.AppendLine(System.Environment.NewLine);
         {
@@ -1401,11 +1570,15 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(veg_bor_v));
             ci.price.SetText(FormatPrice(veg_bor_price));
             
-            sum2 += veg_bor_price;
             
             export_buffer.AppendLine("Бор и Молибден (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_bor_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_bor_price));
+            
+            StringTriplet st = new StringTriplet("Бор и Молибден (вегетация)", FormatForExport_Litres(veg_bor_v), FormatForExport_Price(veg_bor_price));
+            AddToExport(st);
+            
+            sum2 += veg_bor_price;
         }
         export_buffer.AppendLine(System.Environment.NewLine);
         {
@@ -1419,11 +1592,14 @@ public class Calculator : MonoBehaviour
             ci.volume.SetText(FormatLitres(veg_med_v));
             ci.price.SetText(FormatPrice(veg_med_price));
             
-            sum2 += veg_med_price;
-            
             export_buffer.AppendLine("Медь (вегетация):");
             export_buffer.AppendLine(FormatForExport_Litres(veg_med_v));
             export_buffer.AppendLine(FormatForExport_Price(veg_med_price));
+            
+            StringTriplet st = new StringTriplet("Медь (вегетация)", FormatForExport_Litres(veg_med_v), FormatForExport_Price(veg_med_price));
+            AddToExport(st);
+            
+            sum2 += veg_med_price;
         }
         export_buffer.AppendLine(System.Environment.NewLine);
         {
@@ -1433,6 +1609,8 @@ public class Calculator : MonoBehaviour
             
             export_buffer.AppendLine("Итого (вегетация):");
             export_buffer.AppendLine(FormatForExport_Price(sum2));
+            
+            AddToExport(new StringTriplet("Итого (вегетация):", "sum_price", FormatForExport_Price(sum2)));
         }
         
         Debug.Log(export_buffer.ToString());

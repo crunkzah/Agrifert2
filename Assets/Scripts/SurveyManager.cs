@@ -15,24 +15,6 @@ public struct StringPair
         v1 = _v1;
         v2 = _v2;
     }
-    public override bool Equals(object ob)
-    {
-        if(ob is StringPair) 
-        {
-            StringPair x = (StringPair) ob;
-            if(v1 == x.v1)
-                return true;
-            else
-                return false;
-        }
-        else {
-            return false;
-        }
-    }
-    public override int GetHashCode()
-    {
-        return v1.GetHashCode();
-    }
 }
 
 public class SurveyManager : MonoBehaviour
@@ -61,6 +43,8 @@ public class SurveyManager : MonoBehaviour
     }
     
     public GameObject save_button;
+    public GameObject back_button;
+    public GameObject next_button;
     
     void HideAllPanels()
     {
@@ -133,8 +117,18 @@ public class SurveyManager : MonoBehaviour
     {
         if(current_panel > 0)
         {
-            OnQuestionBeforeSwitch();
+            // if(current_panel == survey_panels.Length)
+            // {
+                
+            // }
+            // else
+            // {
+            // }
             current_panel--;
+            DisplayThingsForCurrentPanel();
+            
+            //OnProceedForward();
+            
             ShowPanel(current_panel);
             SetQuestionNumber();
         }
@@ -148,16 +142,19 @@ public class SurveyManager : MonoBehaviour
     {
         if(current_panel == survey_panels.Length - 1)
         {
+            OnProceedForward();
             current_panel++;
             ShowPanel(current_panel);
+            DisplayThingsForCurrentPanel();
         }
         else
         {
             if(current_panel < survey_panels.Length - 1)
             {
-                OnQuestionBeforeSwitch();
+                OnProceedForward();
                 current_panel++;
                 ShowPanel(current_panel);
+                DisplayThingsForCurrentPanel();
                 SetQuestionNumber();
             }
             else
@@ -215,13 +212,124 @@ public class SurveyManager : MonoBehaviour
         saved_results.Add(x);
     }
     
-    public void OnQuestionBeforeSwitch()
+    public void DisplayThingsForCurrentPanel()
+    {
+        back_button.SetActive(true);
+        next_button.SetActive(true);
+        switch(current_panel)
+        {
+            case 0:
+            {
+                back_button.SetActive(false);
+                SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
+                break;
+            }
+            case 1:
+            {
+                SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
+                break;
+            }
+            case 2:
+            {
+                SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
+                break;
+            }
+            case 3:
+            {
+                SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
+                break;
+            }
+            case 4:
+            {
+                SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
+                break;
+            }
+            case 5:
+            {
+                SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
+                break;
+            }
+            case 6:
+            {
+                SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
+                break;
+            }
+            case 7:
+            {
+                SetPanelName("Состав воды в рабочем растворе при опрыскивании урожая:");
+                break;
+            }
+            case 8:
+            {
+                SetPanelName("Климатические особенности:");
+                break;
+            }
+            case 9:
+            {
+                SetPanelName("Климатические особенности:");
+                break;
+            }
+            case 10:
+            {
+                SetPanelName("Семенной материал:");
+                break;
+            }
+            case 11:
+            {
+                SetPanelName("Генные и сортовые особенности реакции на минеральное питание:");
+                break;
+            }
+            case 12:
+            {
+                SetPanelName("Генные и сортовые особенности реакции на минеральное питание:");
+                break;
+            }
+            case 13:
+            {
+                SetPanelName("Генные и сортовые особенности реакции на минеральное питание:");
+                break;
+            }
+            case 14:
+            {
+                SetPanelName("Минеральное питание:");
+                break;
+            }
+            case 15:
+            {
+                SetPanelName("Минеральное питание:");
+                break;
+            }
+            case 16:
+            {
+                SetPanelName("Болезни культуры и сорность полей:");
+                break;
+            }
+            case 17:
+            {
+                SetPanelName("Исторические данные:");
+                break;
+            }
+            case 18:
+            {
+                SetPanelName("Сохраните результаты опроса");
+                next_button.SetActive(false);
+                break;
+            }
+            default:
+            {
+                SetPanelName("Тематика вопроса:");
+                break;
+            }
+        }
+    }
+    
+    public void OnProceedForward()
     {
         switch(current_panel)
         {
             case 0:
             {
-                SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
+                // SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
                 AddRecord(new StringPair("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания)", "title"));
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
@@ -231,43 +339,62 @@ public class SurveyManager : MonoBehaviour
             }
             case 1:
             {
+                
+                // SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
+                AddRecord(new StringPair("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания)", "title"));
+                
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
                 AddRecord(question_record);
                 break;
             }
             case 2:
             {
+                // SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
+                AddRecord(new StringPair("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания)", "title"));
+                
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
                 AddRecord(question_record);
                 break;
             }
             case 3:
             {
+                // SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
+                AddRecord(new StringPair("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания)", "title"));
+                
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
                 AddRecord(question_record);
                 break;
             }
             case 4:
             {
+                // SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
+                AddRecord(new StringPair("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания)", "title"));
+                
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
                 AddRecord(question_record);
                 break;
             }
             case 5:
             {
+                // SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
+                AddRecord(new StringPair("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания)", "title"));
+                
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
                 AddRecord(question_record);
                 break;
             }
             case 6:
             {
+                // SetPanelName("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания):");
+                AddRecord(new StringPair("Описание почвы (для определения уровня потенциального плодородия и доступности элементов питания)", "title"));
+                
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
                 AddRecord(question_record);
                 break;
             }
             case 7:
             {
-                SetPanelName("Состав воды в рабочем растворе при опрыскивании урожая:");
+                // SetPanelName("Состав воды в рабочем растворе при опрыскивании урожая:");
                 AddRecord(new StringPair("Состав воды в рабочем растворе при опрыскивании урожая", "title"));
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
@@ -276,8 +403,7 @@ public class SurveyManager : MonoBehaviour
             }
             case 8:
             {
-                SetPanelName("Климатические особенности:");
-                
+                // SetPanelName("Климатические особенности:");
                 AddRecord(new StringPair("Климатические особенности", "title"));
                 
                 
@@ -287,14 +413,18 @@ public class SurveyManager : MonoBehaviour
             }
             case 9:
             {
+                // SetPanelName("Климатические особенности:");
+                AddRecord(new StringPair("Климатические особенности", "title"));
+                
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
                 AddRecord(question_record);
                 break;
             }
             case 10:
             {
-                SetPanelName("Семенной материал:");
-                saved_results.Add(new StringPair("Семенной материал", "title"));
+                // SetPanelName("Семенной материал:");
+                
+                AddRecord(new StringPair("Семенной материал", "title"));
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
                 AddRecord(question_record);
@@ -302,8 +432,8 @@ public class SurveyManager : MonoBehaviour
             }
             case 11:
             {
-                SetPanelName("Генные и сортовые особенности реакции на минеральное питание:");
-                saved_results.Add(new StringPair("Генные и сортовые особенности реакции на минеральное питание", "title"));
+                // SetPanelName("Генные и сортовые особенности реакции на минеральное питание:");
+                AddRecord(new StringPair("Генные и сортовые особенности реакции на минеральное питание", "title"));
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
                 AddRecord(question_record);
@@ -311,19 +441,25 @@ public class SurveyManager : MonoBehaviour
             }
             case 12:
             {
+                // SetPanelName("Генные и сортовые особенности реакции на минеральное питание:");
+                AddRecord(new StringPair("Генные и сортовые особенности реакции на минеральное питание", "title"));
+                
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
                 AddRecord(question_record);
                 break;
             }
             case 13:
             {
+                // SetPanelName("Генные и сортовые особенности реакции на минеральное питание:");
+                AddRecord(new StringPair("Генные и сортовые особенности реакции на минеральное питание", "title"));
+                
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
                 AddRecord(question_record);
                 break;
             }
             case 14:
             {
-                SetPanelName("Минеральное питание:");
+                // SetPanelName("Минеральное питание:");
                 AddRecord(new StringPair("Минеральное питание", "title"));
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
@@ -332,13 +468,16 @@ public class SurveyManager : MonoBehaviour
             }
             case 15:
             {
+                // SetPanelName("Минеральное питание:");
+                AddRecord(new StringPair("Минеральное питание", "title"));
+                
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
                 AddRecord(question_record);
                 break;
             }
             case 16:
             {
-                SetPanelName("Болезни культуры и сорность полей:");
+                // SetPanelName("Болезни культуры и сорность полей:");
                 AddRecord(new StringPair("Болезни культуры и сорность полей", "title"));
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
@@ -347,7 +486,7 @@ public class SurveyManager : MonoBehaviour
             }
             case 17:
             {
-                SetPanelName("Исторические данные:");
+                // SetPanelName("Исторические данные:");
                 AddRecord(new StringPair("Исторические данные", "title"));
                 
                 StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
@@ -356,12 +495,8 @@ public class SurveyManager : MonoBehaviour
             }
             case 18:
             {
-                StringPair question_record = new StringPair(GetCurrentSurveyPanel().GetQuestionName(), GetCurrentSurveyPanel().GetResult());
-                AddRecord(question_record);
-                break;
-            }
-            case 19:
-            {
+                SetPanelName("Сохраните результаты опроса");
+                
                 break;
             }
             default:

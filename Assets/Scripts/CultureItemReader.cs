@@ -72,6 +72,61 @@ public class CultureItemReader : MonoBehaviour
         
         return Result;
     }
+    
+    public static string GetCultureNamePretty(Culture _item)
+    {
+        string Result = "Название_Культуры";
+        
+        switch(_item)
+        {
+            case(Culture.Ozimaya_pshenica):
+            {
+                Result = "Озимая пшеница";
+                break;
+            }
+            case(Culture.Kartofel):
+            {
+                Result = "Картофель";
+                break;
+            }
+            case(Culture.Kukuruza):
+            {
+                Result = "Кукуруза";
+                break;
+            }
+            case(Culture.Podsolnechnik):
+            {
+                Result = "Подсолнечник";
+                break;
+            }
+            case(Culture.Raps):
+            {
+                Result = "Рапс";
+                break;
+            }
+            case(Culture.Soy):
+            {
+                Result = "Соя";
+                break;
+            }
+            case(Culture.Svekla):
+            {
+                Result = "Сахарная свекла";
+                break;
+            }
+            case(Culture.Xlopchatnik):
+            {
+                Result = "Хлопчатник";
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+        
+        return Result;
+    }
 
 
     void Awake()
